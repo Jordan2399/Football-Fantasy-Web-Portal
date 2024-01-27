@@ -12,6 +12,7 @@ export namespace AuthenticationValidation {
         email: z.string().email(),
         password: z.string(),
         cnf_password: z.string(),
+        role: z.enum(["admin", "user"]).optional(),
       })
       .strict()
       .refine((data) => data.password === data.cnf_password, {
@@ -20,4 +21,12 @@ export namespace AuthenticationValidation {
       }),
   };
 
+  export const SignIn = {
+    body: z
+      .object({
+        uid: z.string(),
+        password: z.string(),
+      })
+      .strict(),
+  };
 }
