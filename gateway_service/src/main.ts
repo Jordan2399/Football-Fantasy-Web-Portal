@@ -1,4 +1,4 @@
-import express, { request } from "express";
+import express from "express";
 import "dotenv/config";
 import morgan from "morgan";
 // import { ErrorMiddleware } from "./core/middlewares/error/error.middleware.js"; // import statusMonitor from 'express-status-monitor';
@@ -30,9 +30,9 @@ class Main extends ExpressConfig {
     this.app.use(morgan("dev"));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use("/resources", [UtilsMSApi, RoutesPrivateRoute.Index])
+    this.app.use("/resources",[UtilsMSApi,RoutesPrivateRoute.Index])
     this.app.use(UtilsError);
-
+  
   }
 }
 
