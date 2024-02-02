@@ -119,6 +119,11 @@ export namespace AuthenticationRoute {
     AuthenticationController.SignIn
   ]);
 
+  Index.post("/authentication/osignin", [
+    validateRequest(AuthenticationValidation.GoogleSignIn),
+    AuthenticationController.GoogleSignIn
+  ]);
+
 
 
 
