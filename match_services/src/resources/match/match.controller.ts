@@ -26,4 +26,19 @@ export namespace MatchController {
             next(e);
         }
     };
+
+
+
+    export const DeleteMatch = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(202).json(await MatchServices.DeleteMatch(req));
+
+        } catch (e) {
+            next(e);
+        }
+    };
 }

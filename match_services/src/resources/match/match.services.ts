@@ -81,4 +81,26 @@ export namespace MatchServices {
         }
     };
 
+    export const DeleteMatch = async (req: Request) => {
+
+        try {
+            let id = req.params.id
+            const check_match = await matchModel.Match.deleteOne({ _id: id });
+
+            if (check_match.deletedCount === 0) {
+                return Promise.reject({
+                    code: 400,
+                    http_status_code: 404,
+                    error: "Match does not exist",
+                });
+            }
+
+            return Promise.resolve({
+                data: 'Match deleted',
+            });
+        } catch (e) {
+            return Promise.reject(e);
+        }
+
+    };
 }

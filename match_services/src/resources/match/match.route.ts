@@ -66,7 +66,7 @@ export namespace MatchRoute {
  */
 
   Index.post("/admin/match", [validateRequest(MatchValidation.CreateMatch), MatchController.CreateMatch]);
-
+  Index.delete("/admin/match/:id", [UtilValidation.Id, MatchController.DeleteMatch]);
 
 
 

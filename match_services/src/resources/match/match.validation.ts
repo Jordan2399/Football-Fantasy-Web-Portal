@@ -14,5 +14,11 @@ export namespace MatchValidation {
       .strict()
   };
 
-  
+  export const DeleteMatch = {
+    params: z
+      .object({
+        id: z.string(),
+      })
+      .strict()
+  };
 }
