@@ -9,7 +9,15 @@ export namespace ClubRoute {
 
 
 
- 
+  Index.get("/club", [ClubController.GetClub]);
+  Index.get("/club/:id", [ClubController.GetClub]);
+  // Index.get("/club/search", [ClubController.GetClub]);
+  // Index.post("/club", [validateRequest(ClubValidation.CreateClub), ClubController.CreateClub]);
+  Index.delete("/club/:id", [UtilValidation.Id, ClubController.DeleteClub]);
+  Index.patch("/club/:id", [ClubImage.fields([
+    { name: 'image', maxCount: 1 }
+  ]), ClubController.UpdateClub]);
+
   Index.post('/club', [
     ClubImage.fields([
       { name: 'image', maxCount: 1 }
