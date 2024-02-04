@@ -13,7 +13,10 @@ export namespace ClubServices {
             return Promise.reject({
                 code: 400,
                 http_status_code: 404,
-                error: 'Files not available',
+                error: {
+                    message: "Image not available.",
+                    path: "image",
+                },
             });
         }
 
@@ -37,14 +40,20 @@ export namespace ClubServices {
                 const new_club = new clubModel.Club({ name: req.body.name, image: `/uploads/private/images/${files.image[0].filename}` });
                 const save_club = await new_club.save();
                 return Promise.resolve({
-                    data: save_club,
-                });
+                    'data': save_club,
+                    'message': 'Club Created Successfully',
+                    'url': 'system/dashboard/clubs'
+                }
+                );
             }
             if (check_club) {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 409,
-                    error: "Club already exist",
+                    error: {
+                        message: "Club already exist.",
+                        path: "name",
+                    },
                 });
             }
         } catch (e) {
@@ -68,11 +77,14 @@ export namespace ClubServices {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Club does not exist",
+                        error: {
+                            message: "Club does not exist",
+                            path: "name",
+                        },
                     });
                 }
                 return Promise.resolve({
-                    data: check_club,
+                    check_club,
                 });
 
             } catch (e) {
@@ -99,11 +111,14 @@ export namespace ClubServices {
                     return Promise.reject({
                         code: 400,
                         http_status_code: 404,
-                        error: "Club does not exist",
+                        error: {
+                            message: "Club does not exist",
+                            path: "name",
+                        },
                     });
                 }
                 return Promise.resolve({
-                    data: clubWithPlayers,
+                    clubWithPlayers,
                 });
 
             } catch (e) {
@@ -132,12 +147,15 @@ export namespace ClubServices {
                 return Promise.reject({
                     code: 400,
                     http_status_code: 404,
-                    error: "Club does not exist",
+                    error: {
+                        message: "Club does not exist",
+                        path: "name",
+                    },
                 });
             }
 
             return Promise.resolve({
-                data: 'Club deleted',
+                message: 'Club deleted',
             });
         } catch (e) {
             return Promise.reject(e);
@@ -169,14 +187,22 @@ export namespace ClubServices {
           );
       
           if (check_club) {
-            return Promise.resolve({
-              data: check_club,
-            });
+            return Promise.resolve(
+                {
+                    'data': check_club,
+                        'message': 'Club Edited Successfully',
+                        'url': 'system/dashboard/clubs'
+              }
+              
+            );
           } else {
             return Promise.reject({
               code: 400,
               http_status_code: 404,
-              error: 'Club does not exist',
+              error: {
+                message: "Club does not exist",
+                path: "name",
+            },
             });
           }
         } catch (e) {
