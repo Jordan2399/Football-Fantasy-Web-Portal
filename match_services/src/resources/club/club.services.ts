@@ -2,7 +2,7 @@ import { Request } from "express";
 import jwt from "jsonwebtoken";
 import { clubModel } from "../../database/models/club/club.model";
 import { CommonType } from "../../database/models/commontype";
-//import { playerModel } from "../../database/models/player/player.model";
+import { playerModel } from "../../database/models/player/player.model";
 import mongoose from "mongoose";
 
 export namespace ClubServices {
@@ -96,12 +96,19 @@ export namespace ClubServices {
             try {
                 console.log(id);
                 const check_club = await clubModel.Club.findById(id);
+                const check_players = await playerModel.Player.find({ club_id: id });
                 console.log('check club:', check_club);
 
                 const clubWithPlayers = {
                     _id: check_club?._id,
                     name: check_club?.name,
                     image: check_club?.image,
+                    players: check_players.map((player: any) => ({
+                        _id: player?._id,
+                        name: player?.name,
+                        age: player?.age,
+                        player_type: player?.player_type,
+                    })),
                 };
 
 

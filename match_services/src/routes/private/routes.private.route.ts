@@ -3,6 +3,7 @@ import {
   AuthorizationRoute,
   PermissionRoute,
   ClubRoute,
+  PlayerRoute,
 
 } from "../../resources";
 // import { ClubRoute } from "../../resources/club";
@@ -11,6 +12,7 @@ export namespace RoutesPrivateRoute {
   Index.use([
     AuthorizationRoute.Index,
     PermissionRoute.Index,
-    ClubRoute.Index
+    ClubRoute.Index,
+    PlayerRoute.Index,
   ]);
 }
