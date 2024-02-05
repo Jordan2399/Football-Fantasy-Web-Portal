@@ -12,11 +12,12 @@ export namespace AuthenticationServices {
     console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup')
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup', req.body, { headers: req.headers });
-      return Promise.resolve({
-        message: authResponse.data.message,
-        token: authResponse.data.token,
-        url: authResponse.data.url,
-      });
+      // return Promise.resolve({
+      //   message: authResponse.data.message,
+      //   token: authResponse.data.token,
+      //   url: authResponse.data.url,
+      // });
+      return Promise.resolve(authResponse.data);
 
     } catch (e) {
       console.log('roshanError', e)

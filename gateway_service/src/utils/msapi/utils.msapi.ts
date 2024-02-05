@@ -12,6 +12,9 @@ export const UtilsMSApi = async (
           permission_path: req.path,
         });
         console.log("its gateway",details)
+        if(!details){
+          console.log("route not found in registry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ")
+        }
         
         if (details && details.ms === "user") {
           req.headers = {

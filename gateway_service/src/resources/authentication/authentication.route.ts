@@ -75,7 +75,6 @@ export namespace AuthenticationRoute {
    *        description: Server Error
    */
   Index.post("/authentication/signup", [
-    validateRequest(AuthenticationValidation.SignUp),
     AuthenticationController.SignUp,
   ]);
 
@@ -115,7 +114,6 @@ export namespace AuthenticationRoute {
  *         description: Server Error
   */
  Index.post("/authentication/signin", [
-   validateRequest(AuthenticationValidation.SignIn),
    AuthenticationController.SignIn
   ]);
   /**
@@ -148,7 +146,6 @@ export namespace AuthenticationRoute {
  *         description: Server Error
  */
   Index.post("/authentication/googlesignin", [
-    validateRequest(AuthenticationValidation.GoogleSignIn),
     AuthenticationController.GoogleSignIn
   ]);
 
@@ -194,7 +191,6 @@ export namespace AuthenticationRoute {
  */
 
     Index.post("/authentication/forgotpassword", [
-      validateRequest(AuthenticationValidation.ForgotPassword),
       AuthenticationController.ForgotPassword,
     ]);
 
@@ -241,7 +237,6 @@ export namespace AuthenticationRoute {
  */
 
   Index.post("/authentication/setpassword", [
-    validateRequest(AuthenticationValidation.SetPassword),
     AuthenticationController.SetPassword,
   ]);
 
