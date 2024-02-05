@@ -7,7 +7,8 @@
   },
   "include": [
     "./src/**/*",
-    "./src/index.d.ts"
+    "./src/index.d.ts",
+    ".env.development"
   ],
   "exclude": [
     "node_modules"
