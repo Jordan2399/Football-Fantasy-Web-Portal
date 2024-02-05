@@ -39,11 +39,7 @@ export namespace AuthenticationServices {
   export const SignIn = async (req: Request) => {
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signin', req.body, { headers: req.headers });
-      return Promise.resolve({
-        message: authResponse.data.message,
-        token: authResponse.data.token,
-        url: authResponse.data.url,
-      });
+      return Promise.resolve(authResponse.data);
 
     } catch (e) {
       // console.log('roshanError', e)

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthenticationController, AuthenticationServices, AuthenticationValidation } from "./index.js";
+import { AuthenticationController, AuthenticationServices } from "./index.js";
 import { validateRequest } from "zod-express-middleware";
 
 export namespace AuthenticationRoute {

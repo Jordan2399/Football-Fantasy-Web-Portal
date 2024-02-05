@@ -7,6 +7,7 @@ import { ExpressConfig } from "./vendor";
 import cookieParser from "cookie-parser";
 import { RoutesPrivateRoute } from "./routes/private/routes.private.route";
 import { UtilsError, UtilsMSApi, UtilsPermission } from "./utils";
+import { TokenVerificationUtils } from "./utils/token";
 
 
 class Main extends ExpressConfig {
@@ -28,9 +29,13 @@ class Main extends ExpressConfig {
     this.app.use(morgan("dev"));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use("/resources",[UtilsMSApi,RoutesPrivateRoute.Index])
+    this.app.use("/resources", [
+      UtilsMSApi,
+      TokenVerificationUtils,
+      UtilsPermission,
+      RoutesPrivateRoute.Index])
     this.app.use(UtilsError);
-  
+
   }
 }
 

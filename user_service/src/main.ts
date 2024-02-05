@@ -21,8 +21,6 @@ class Main extends ExpressConfig {
       cors({
         origin: [
           "http://localhost:3000/api",
-          "https://loan-client.vercel.app/api",
-          "http://192.168.1.4:3000/api",
         ],
       })
     );
@@ -33,8 +31,6 @@ class Main extends ExpressConfig {
     this.app.use(express.urlencoded({ extended: true }));
 
     this.app.use("/resources", [
-      TokenVerificationUtils,
-      UtilsPermission,
       UtilsMSApi,
       RoutesPrivateRoute.Index,
     ]);

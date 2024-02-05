@@ -11,10 +11,10 @@ export const UtilsMSApi = async (
         const details = await PermissionModel.Permission.findOne({
           permission_path: req.path,
         });
-        console.log("its gateway",details)
         if(!details){
           console.log("route not found in registry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ")
         }
+        console.log("its gateway",details)
         
         if (details && details.ms === "user") {
           req.headers = {
