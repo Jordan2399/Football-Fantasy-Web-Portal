@@ -19,9 +19,7 @@ class Main extends ExpressConfig {
     this.app.use(
       cors({
         origin: [
-          "http://localhost:3000/api",
-          "https://loan-client.vercel.app/api",
-          "http://192.168.1.4:3000/api",
+          "http://localhost:3000/api"
         ],
       })
     );
@@ -40,6 +38,5 @@ const server = new Main(false);
 server.start();
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  // Handle the error or exit the process as needed
   process.exit(1);
 });

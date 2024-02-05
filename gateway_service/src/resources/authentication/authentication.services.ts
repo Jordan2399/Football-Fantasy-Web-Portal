@@ -12,11 +12,12 @@ export namespace AuthenticationServices {
     console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup')
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signup', req.body, { headers: req.headers });
-      return Promise.resolve({
-        message: authResponse.data.message,
-        token: authResponse.data.token,
-        url: authResponse.data.url,
-      });
+      // return Promise.resolve({
+      //   message: authResponse.data.message,
+      //   token: authResponse.data.token,
+      //   url: authResponse.data.url,
+      // });
+      return Promise.resolve(authResponse.data);
 
     } catch (e) {
       console.log('roshanError', e)
@@ -38,6 +39,30 @@ export namespace AuthenticationServices {
   export const SignIn = async (req: Request) => {
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/signin', req.body, { headers: req.headers });
+      return Promise.resolve({
+        message: authResponse.data.message,
+        token: authResponse.data.token,
+        url: authResponse.data.url,
+      });
+
+    } catch (e) {
+      // console.log('roshanError', e)
+      if (axios.isAxiosError(e)) {
+        const axiosError = e as AxiosError;
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
+        }
+      }
+      return Promise.reject(e);
+    }
+  };
+  export const SignInV2 = async (req: Request) => {
+    try {
+      const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/googlesignin', req.body, { headers: req.headers });
       return Promise.resolve({
         message: authResponse.data.message,
         token: authResponse.data.token,

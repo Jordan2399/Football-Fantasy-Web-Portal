@@ -1,6 +1,9 @@
 import { Router } from "express";
-import { AuthenticationRoute } from "../../resources";
+import { AuthenticationRoute, FantasyRoute } from "../../resources";
 export namespace RoutesPrivateRoute {
   export const Index = Router();
-  Index.use([AuthenticationRoute.Index]);
+  Index.use([
+    AuthenticationRoute.Index,
+    FantasyRoute.Index
+  ]);
 }
