@@ -11,7 +11,11 @@ export namespace MatchRoute {
 
   Index.post("/match", [validateRequest(MatchValidation.CreateMatch), MatchController.CreateMatch]);
 
+  Index.get("/match", [MatchController.GetMatch]);
 
+
+  Index.delete("/match/:id", [UtilValidation.Id, MatchController.DeleteMatch]);
+  Index.patch("/match/:id", [MatchController.UpdateMatch]);
 
 
 }
