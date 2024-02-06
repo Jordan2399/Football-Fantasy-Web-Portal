@@ -83,9 +83,9 @@ export namespace ClubServices {
                         },
                     });
                 }
-                return Promise.resolve({
+                return Promise.resolve(
                     check_club,
-                });
+                );
 
             } catch (e) {
                 return Promise.reject(e);
@@ -124,9 +124,9 @@ export namespace ClubServices {
                         },
                     });
                 }
-                return Promise.resolve({
-                    clubWithPlayers,
-                });
+                return Promise.resolve(
+                    clubWithPlayers
+                );
 
             } catch (e) {
                 return Promise.reject(e);
@@ -172,50 +172,50 @@ export namespace ClubServices {
 
     export const UpdateClub = async (req: Request) => {
         try {
-          const files = req?.files as unknown as CommonType.Iimage;
-      
-          console.log(files?.image && files.image.length > 0 ? files.image[0].destination + '' + files.image[0].filename : 'No image provided');
-          console.log('req', req.body);
-      
-          const updateFields: any = {};
-      
-          if (req.body.name) {
-            updateFields.name = req.body.name;
-          }
-      
-          if (files && files.image && files.image.length > 0) {
-            updateFields.image = `/uploads/private/images/${files.image[0].filename}`;
-          }
-      
-          const check_club = await clubModel.Club.findOneAndUpdate(
-            { _id: req.params?.id },
-            { $set: updateFields },
-            { new: true }
-          );
-      
-          if (check_club) {
-            return Promise.resolve(
-                {
-                    'data': check_club,
+            const files = req?.files as unknown as CommonType.Iimage;
+
+            console.log(files?.image && files.image.length > 0 ? files.image[0].destination + '' + files.image[0].filename : 'No image provided');
+            console.log('req', req.body);
+
+            const updateFields: any = {};
+
+            if (req.body.name) {
+                updateFields.name = req.body.name;
+            }
+
+            if (files && files.image && files.image.length > 0) {
+                updateFields.image = `/uploads/private/images/${files.image[0].filename}`;
+            }
+
+            const check_club = await clubModel.Club.findOneAndUpdate(
+                { _id: req.params?.id },
+                { $set: updateFields },
+                { new: true }
+            );
+
+            if (check_club) {
+                return Promise.resolve(
+                    {
+                        'data': check_club,
                         'message': 'Club Edited Successfully',
                         'url': 'system/dashboard/clubs'
-              }
-              
-            );
-          } else {
-            return Promise.reject({
-              code: 400,
-              http_status_code: 404,
-              error: {
-                message: "Club does not exist",
-                path: "name",
-            },
-            });
-          }
+                    }
+                    
+                );
+            } else {
+                return Promise.reject({
+                    code: 400,
+                    http_status_code: 404,
+                    error: {
+                        message: "Club does not exist",
+                        path: "name",
+                    },
+                });
+            }
         } catch (e) {
-          return Promise.reject(e);
+            return Promise.reject(e);
         }
-      };
-      
-      
+    };
+
+
 }
