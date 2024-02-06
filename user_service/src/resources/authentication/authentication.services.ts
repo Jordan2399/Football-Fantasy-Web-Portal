@@ -346,17 +346,17 @@ export namespace AuthenticationServices {
           const save_session_forgot_password = await new_session_forgot_password.save();
   
           console.log('email sent with new token is does not exist')
-          await ForgotPasswordEmailHelper({
-            user_email: save_session_forgot_password.session_email as string,
-            verification_token: save_session_forgot_password.session_verification_key as string,
-          });
+          // await ForgotPasswordEmailHelper({
+          //   user_email: save_session_forgot_password.session_email as string,
+          //   verification_token: save_session_forgot_password.session_verification_key as string,
+          // });
   
         } else {
           console.log('email sent with new token if already exists')
-          await ForgotPasswordEmailHelper({
-            user_email: check_forgot_password_session?.session_email as string,
-            verification_token: check_forgot_password_session?.session_verification_key as string,
-          });
+          // await ForgotPasswordEmailHelper({
+          //   user_email: check_forgot_password_session?.session_email as string,
+          //   verification_token: check_forgot_password_session?.session_verification_key as string,
+          // });
         }
   
   
@@ -380,7 +380,6 @@ export namespace AuthenticationServices {
   
 
 
-
   export const SetPassword = async (req: Request) => {
     try {
       return jwt.verify(
@@ -388,7 +387,7 @@ export namespace AuthenticationServices {
         process.env.JWT as string,
         async (err: any, decoded: any) => {
           if (err) {
-            console.log(err)
+            console.log(err);
             return Promise.reject({
               code: 400,
               http_status_code: 406,
@@ -399,6 +398,19 @@ export namespace AuthenticationServices {
             });
           } else {
             const { email } = decoded;
+            const sessionData = await SessionModel.ForgotPassword.findOne({ session_email: email });
+  
+            if (!sessionData) {
+              return Promise.reject({
+                code: 400,
+                http_status_code: 404,
+                error: {
+                  message: "Session data not found",
+                  path: "session",
+                },
+              });
+            }
+  
             await userModel.User.updateOne(
               { email: email },
               { $set: { password: req.body.new_password } }
