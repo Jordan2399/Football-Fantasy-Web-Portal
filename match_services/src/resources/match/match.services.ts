@@ -100,6 +100,58 @@ export namespace MatchServices {
 
 
 
+    export const PlayersByMatch = async (req: Request) => {
+
+        try {
+            if (req.query.match_id) {
+                var id = req.query.match_id
+                var desiredPlayerType = req.query.player_type
+
+                console.log(id)
+                // const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
+                const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
+
+
+                let allPlayers;
+                let filteredPlayers;
+
+
+                if (check_match) {
+                    // Use check_match safely here
+                    const team1Players = check_match.team1players;
+                    const team2Players = check_match.team2players;
+                    allPlayers = [...(team1Players ?? []), ...(team2Players ?? [])];
+                    filteredPlayers = allPlayers.filter(player => (player as any).player_type === desiredPlayerType);
+
+                }
+
+
+
+
+
+                if (!check_match) {
+                    return Promise.reject({
+                        code: 400,
+                        http_status_code: 404,
+                        error: {
+                            message: "Match does not exist",
+                            path: "name",
+                        },
+                    });
+                }
+                return Promise.resolve(
+                    filteredPlayers
+                );
+
+
+            }
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    };
+
+
+
 
 
 

@@ -18,4 +18,8 @@ export namespace MatchRoute {
   Index.patch("/match/:id", [MatchController.UpdateMatch]);
 
 
+
+
+  Index.get("/current_match_players", [MatchController.PlayersByMatch]);
+
 }

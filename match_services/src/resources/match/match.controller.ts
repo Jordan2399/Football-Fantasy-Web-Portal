@@ -36,6 +36,27 @@ export namespace MatchController {
 
 
 
+    export const PlayersByMatch = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(200).json(await MatchServices.PlayersByMatch(req));
+        } catch (e) {
+            next(e);
+        }
+    };
+
+
+
+    
+
+
+
+
+
+
 
     export const DeleteMatch = async (
         req: Request,
