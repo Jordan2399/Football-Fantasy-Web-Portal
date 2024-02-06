@@ -21,35 +21,89 @@ export namespace ClubRoute {
 
 
 
-    /**
- * @openapi
- * '/resources/club':
- *   get:
- *     tags:
- *       - Club Controller
- *     summary: Clubs list
- *     responses:
- *       200:
- *         description: OK
- *       401:
- *         description: Unauthorized
- *       404:
- *         description: Not Found
- *       500:
- *         description: Server Error
- */
+  /**
+* @openapi
+* '/resources/club':
+*   get:
+*     tags:
+*       - Club Controller
+*     summary: Clubs list
+*     parameters:
+*       - in: query
+*         name: id
+*         schema:
+*           type: string
+*         description: get club by id
+*       - in: query
+*         name: name
+*         schema:
+*           type: string
+*         description: search by name
+*     responses:
+*       200:
+*         description: OK
+*       401:
+*         description: Unauthorized
+*       404:
+*         description: Not Found
+*       500:
+*         description: Server Error
+*/
 
-
+  //     /**
+  //  * @openapi
+  //  * '/resources/club?':
+  //  *   get:
+  //  *     tags:
+  //  *       - Club Controller
+  //  *     summary: Clubs list by id
+  //  *     responses:
+  //  *       200:
+  //  *         description: OK
+  //  *       401:
+  //  *         description: Unauthorized
+  //  *       404:
+  //  *         description: Not Found
+  //  *       500:
+  //  *         description: Server Error
+  //  */
 
   Index.get("/club", [ClubController.GetClub]);
 
 
 
 
+
+
+    /**
+* @openapi
+* '/resources/club':
+*   delete:
+*     tags:
+*       - Club Controller
+*     summary: Clubs Delete
+*     parameters:
+*       - in: query
+*         name: id
+*         schema:
+*           type: string
+*         description: get club by id
+*     responses:
+*       200:
+*         description: OK
+*       401:
+*         description: Unauthorized
+*       404:
+*         description: Not Found
+*       500:
+*         description: Server Error
+*/
+
+  Index.delete("/club", [ClubController.DeleteClub]);
+
   // Index.get("/club/:id", [ClubController.GetClub]);
   // // Index.get("/club/search", [ClubController.GetClub]);
   // // Index.post("/club", [validateRequest(ClubValidation.CreateClub), ClubController.CreateClub]);
-  // Index.delete("/club/:id", [UtilValidation.Id, ClubController.DeleteClub]);
   // Index.patch("/club/:id", [ClubImage.fields([
   //   { name: 'image', maxCount: 1 }
   // ]), ClubController.UpdateClub]);

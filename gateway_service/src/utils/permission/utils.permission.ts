@@ -35,18 +35,21 @@ export const UtilsPermission = async (
     console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR', userDetails)
     const details = await PermissionModel.Permission.findOne({
       permission_path: req.path,
+      permission_method:req.method
     });
     console.log('OOOOOOOO',req.path,details)
+    console.log('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',req.method)
+    console.log('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',req.method as TMethod)
 
     if (
       details &&
       details.permission_allowed_role.includes(userDetails.role) &&
-      details.permission_method === (req.method as TMethod) &&
+      details.permission_method === (req.method as string) &&
       details.permission_status === "1"
     ) {
       next();
     } else {
-      res.status(401).send("Not allowed");
+      res.status(401).send("Not allowed: permission");
     }
   } catch (e) {
     next(e);

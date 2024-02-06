@@ -11,9 +11,10 @@ export const UtilsMSApi = async (
       if (process.env.MSTYPE === "gateway") {
         const details = await PermissionModel.Permission.findOne({
           permission_path: req.path,
+          permission_method:req.method
         });
         if(!details){
-          console.log("route not found in registry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ")
+          console.log("route not found in registry %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",details)
         }
         console.log("its gateway",details)
         
@@ -39,7 +40,7 @@ export const UtilsMSApi = async (
         }
       } else {
         if (process.env.APIKEY !== req.headers['api_key']) {
-          res.status(400).send("Not allowed");
+          res.status(400).send("Not allowed: api key didnt matched");
         }
       }
       

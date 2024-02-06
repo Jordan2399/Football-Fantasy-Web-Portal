@@ -9,12 +9,12 @@ export namespace UtilValidation {
   ) => {
     const objectIdRegex = /^[0-9a-fA-F]{24}$/;
     try {
-      if (!req.params.id) {
-        console.log("log 1", req.params.id)
+      if (!req.query.id) {
+        console.log("log 1", req.query.id)
         res.status(404).json({ 'message': 'Club does not exist' })
       }
       const isValidObjectId = (id: string) => objectIdRegex.test(id);
-      if (!isValidObjectId(req.params.id)) {
+      if (!isValidObjectId(req.query.id as string)) {
         console.log("invalid")
         res.status(404).json({ 'message': 'Invalid Id' })
       }

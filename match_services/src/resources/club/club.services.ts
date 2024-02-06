@@ -61,8 +61,9 @@ export namespace ClubServices {
         }
     };
     export const GetClub = async (req: Request) => {
-        if (Object.keys(req.query).length > 0) {
-            console.log('i am from query', req.query)
+        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',req.query)
+        if (Object.keys(req.query).length > 0 && !req.query.hasOwnProperty('id')) {
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%i am from query', req.query)
             const filter = { ...req.query }
             try {
                 for (const key in filter) {
@@ -91,8 +92,10 @@ export namespace ClubServices {
                 return Promise.reject(e);
             }
         }
-        if (req.params.id) {
-            var id = req.params.id;
+        if (req.query.id) {
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%i am from query2', req.query)
+
+            var id = req.query.id;
             try {
                 console.log(id);
                 const check_club = await clubModel.Club.findById(id);
@@ -135,6 +138,8 @@ export namespace ClubServices {
 
 
         try {
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%i am from query3', req.query)
+
             const check_club = await clubModel.Club.find();
             return Promise.resolve(
                 check_club,
@@ -147,7 +152,7 @@ export namespace ClubServices {
     export const DeleteClub = async (req: Request) => {
 
         try {
-            let id = req.params.id
+            let id = req.query.id
             const check_club = await clubModel.Club.deleteOne({ _id: id });
 
             if (check_club.deletedCount === 0) {
