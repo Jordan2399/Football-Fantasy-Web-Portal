@@ -403,7 +403,10 @@ export namespace AuthenticationServices {
               { email: email },
               { $set: { password: req.body.new_password } }
             );
-
+  
+            // Delete the session record after successfully updating the password
+            await SessionModel.ForgotPassword.deleteOne({ session_email: email });
+  
             return Promise.resolve({
               message: "Password updated successfully",
             });
@@ -414,6 +417,7 @@ export namespace AuthenticationServices {
       return Promise.reject(e);
     }
   };
+  
 
 
 
