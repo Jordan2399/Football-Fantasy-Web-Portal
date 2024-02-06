@@ -346,17 +346,17 @@ export namespace AuthenticationServices {
           const save_session_forgot_password = await new_session_forgot_password.save();
   
           console.log('email sent with new token is does not exist')
-          // await ForgotPasswordEmailHelper({
-          //   user_email: save_session_forgot_password.session_email as string,
-          //   verification_token: save_session_forgot_password.session_verification_key as string,
-          // });
+          await ForgotPasswordEmailHelper({
+            user_email: save_session_forgot_password.session_email as string,
+            verification_token: save_session_forgot_password.session_verification_key as string,
+          });
   
         } else {
           console.log('email sent with new token if already exists')
-          // await ForgotPasswordEmailHelper({
-          //   user_email: check_forgot_password_session?.session_email as string,
-          //   verification_token: check_forgot_password_session?.session_verification_key as string,
-          // });
+          await ForgotPasswordEmailHelper({
+            user_email: check_forgot_password_session?.session_email as string,
+            verification_token: check_forgot_password_session?.session_verification_key as string,
+          });
         }
   
   
