@@ -1,0 +1,22 @@
+---
+- hosts: ansible
+
+  tasks:
+  - name: create docker image
+    command: docker build -t match_services -f /opt/docker/footballfantasywebportal/match_services/Dockerfile /opt/docker/footballfantasywebportal/match_services
+    args:
+      chdir: /opt/docker/
+    register: result
+
+  - debug:
+      var: result
+
+  - name: create tag to push image into dockerhub
+    command: docker tag match_services:latest dockerhub_name/match_services:latest
+
+  - name: push docker image
+    command: docker push dockerhub_name/match_services:latest
+
+---------------------------End of Code----------------------------------
+
+Note: Change the dockerhub_name to the username of your docker hub.
