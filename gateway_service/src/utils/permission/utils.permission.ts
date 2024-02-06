@@ -41,12 +41,12 @@ export const UtilsPermission = async (
     if (
       details &&
       details.permission_allowed_role.includes(userDetails.role) &&
-      details.permission_method.includes(req.method as TMethod) &&
+      details.permission_method === (req.method as TMethod) &&
       details.permission_status === "1"
     ) {
       next();
     } else {
-      res.status(400).send("Not allowed");
+      res.status(401).send("Not allowed");
     }
   } catch (e) {
     next(e);

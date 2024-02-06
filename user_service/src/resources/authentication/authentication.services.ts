@@ -76,12 +76,13 @@ export namespace AuthenticationServices {
 
 
     console.log('***************************************user ms sign in', req.body)
-
-
+    
+    
     try {
       const check_user = await userModel.User.findOne({
         $or: [{ email: req.body?.uid }, { username: req.body?.uid }],
       });
+      console.log('***************************************user ms sign in', check_user)
       if (check_user) {
         const match = await bcrypt.compare(
           req.body.password,
@@ -98,13 +99,13 @@ export namespace AuthenticationServices {
           });
         }
 
-        const role = await userTypeModel.UserType.findOne({ uid: check_user._id })
-        console.log(role?.role)
+        // const role = await userTypeModel.UserType.findOne({ uid: check_user._id })
+        console.log(check_user.role)
 
         const accessToken = jwt.sign(
           {
             id: check_user._id,
-            role: role?.role,
+            role: check_user.role,
           },
           process.env.JWT as string,
           {
@@ -116,7 +117,7 @@ export namespace AuthenticationServices {
         return Promise.resolve({
           message: "Sign in successful",
           token: accessToken,
-          url: role?.role === "user" ? "/dashboard" : "/system/dashboard",
+          url: check_user?.role === "user" ? "/dashboard" : "/system/dashboard",
         });
       }
       if (!check_user) {
