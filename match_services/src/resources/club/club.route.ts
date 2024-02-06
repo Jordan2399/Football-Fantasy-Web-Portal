@@ -7,7 +7,17 @@ import { ClubImage } from "../../vendor/multer/config.js";
 export namespace ClubRoute {
   export const Index = Router();
 
-
+  /**
+ * @openapi
+ * '/heartcheck':
+ *   get:
+ *     tags:
+ *       - Heart Check
+ *     summary: Check if server is running
+ *     responses:
+ *       200:
+ *         description: OK
+ */
 
   Index.get("/club", [ClubController.GetClub]);
   Index.get("/club/:id", [ClubController.GetClub]);

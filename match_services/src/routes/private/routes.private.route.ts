@@ -1,7 +1,5 @@
 import { Router } from "express";
 import {
-  AuthorizationRoute,
-  PermissionRoute,
   ClubRoute,
   PlayerRoute,
 
@@ -10,8 +8,6 @@ import {
 export namespace RoutesPrivateRoute {
   export const Index = Router();
   Index.use([
-    AuthorizationRoute.Index,
-    PermissionRoute.Index,
     ClubRoute.Index,
     PlayerRoute.Index,
   ]);
