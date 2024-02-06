@@ -1,0 +1,22 @@
+---
+- hosts: ansible
+
+  tasks:
+  - name: create docker image
+    command: docker build -t gateway_service -f /opt/docker/footballfantasywebportal/gateway_service/Dockerfile /opt/docker/footballfantasywebportal/gateway_>
+    args:
+      chdir: /opt/docker/
+    register: result
+
+  - debug:
+      var: result
+
+  - name: create tag to push image into dockerhub
+    command: docker tag gateway_service:latest dockerhub_name/gateway_service:latest
+
+  - name: push docker image
+    command: docker push dockerhub_name/gateway_service:latest
+
+---------------------------End of Code----------------------------------
+
+Note: Change the dockerhub_name to the username of your docker hub.

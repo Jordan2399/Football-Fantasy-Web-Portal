@@ -6,5 +6,7 @@ COPY .env.production ./
 RUN npm install
 COPY . .
 RUN npm run build
-EXPOSE 8080
+EXPOSE 5000
 CMD [ "node", "dist/src/main.js" ]
+
+
