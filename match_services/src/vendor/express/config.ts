@@ -28,7 +28,7 @@ export class ExpressConfig extends MongooseConfig {
         console.log(`Worker ${worker.process.pid} died`);
       });
     } else {
-      const port = process.env.PORT || 4000;
+      const port = process.env.PORT || 4001;
 
       this.app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
