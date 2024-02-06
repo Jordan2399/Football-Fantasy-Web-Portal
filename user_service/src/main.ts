@@ -6,7 +6,7 @@ import cors from "cors";
 import { ExpressConfig } from "./vendor";
 import cookieParser from "cookie-parser";
 import { RoutesPrivateRoute } from "./routes/private/routes.private.route";
-import { UtilsError, UtilsMSApi, UtilsPermission } from "./utils";
+import { UtilsError, UtilsMSApi } from "./utils";
 import { TokenVerificationUtils } from "./utils/token";
 
 

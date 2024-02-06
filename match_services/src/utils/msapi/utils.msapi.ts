@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { PermissionModel } from "../../database/models/permission/permission.model";
 export const UtilsMSApi = async (
   req: Request,
   res: Response,
@@ -7,20 +8,20 @@ export const UtilsMSApi = async (
   // console.log('ásdfasdfasdfasdf')
   try {
     // console.log('header in ms:', req.headers)
-    // if (process.env.MSTYPE === "gateway") {
-    //   const details = await PermissionModel.Permission.findOne({
-    //     permission_path: req.path,
-    //   });
+    if (process.env.MSTYPE === "gateway") {
+      const details = await PermissionModel.Permission.findOne({
+        permission_path: req.path,
+      });
 
 
-    //   if (details && details.ms === "user") {
-    //     req.headers['api_key'] = process.env.API_USER
-    //   }
-    //   else if (details && details.ms === "match") {
-    //     req.headers['api_key'] = process.env.API_MATCH
-    //   }
-    //   next()
-    // } else {
+      if (details && details.ms === "user") {
+        req.headers['api_key'] = process.env.API_USER
+      }
+      else if (details && details.ms === "match") {
+        req.headers['api_key'] = process.env.API_MATCH
+      }
+      next()
+    } else {
       console.log('api_key',req.headers)
 
       console.log('environment api_key',process.env.APIKEY)
@@ -31,7 +32,7 @@ export const UtilsMSApi = async (
         console.log('api validation pass', req.body)
         next()
       }
-    // }
+    }
 
 
   } catch (e) {
