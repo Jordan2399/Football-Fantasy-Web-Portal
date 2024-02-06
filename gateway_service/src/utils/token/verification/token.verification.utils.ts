@@ -20,9 +20,20 @@ export const TokenVerificationUtils = async (
       next();
       return;
     }
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
+    // Check if Authorization header is present
+    if (!req.headers.authorization) {
+      return res.status(401).json({ message: "Unauthorized: Missing token" });
+    }
+
+
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', req.headers.authorization)
     const { token } = await TokenSplitUtils(req.headers.authorization);
     const token2 = req.cookies?.["accessToken"];
+
+
+    console.log('SSSSSSSSSS', token)
+    console.log('uuuuuuuuuu', token2)
 
     jwt.verify(
       token || token2,

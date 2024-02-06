@@ -1,11 +1,6 @@
 import { Request } from "express";
-import { userModel } from "../../database/models/user/user.model";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { userTypeModel } from "../../database/models/userType/userType.model";
 import axios from "axios";
 import { AxiosError } from "axios";
-import { error } from "console";
 
 export namespace AuthenticationServices {
   export const SignUp = async (req: Request) => {

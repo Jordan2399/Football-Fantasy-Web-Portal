@@ -99,10 +99,10 @@ export namespace AuthenticationRoute {
  *             properties:
  *               uid:
  *                 type: string
- *                 default: johndoe
+ *                 default: devkkali@gmail.com
  *               password:
  *                 type: string
- *                 default: johnDoe20!@
+ *                 default: testpass1
  *     responses:
  *       200:
  *         description: OK

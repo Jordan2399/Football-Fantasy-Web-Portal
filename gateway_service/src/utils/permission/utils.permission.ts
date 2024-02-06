@@ -36,6 +36,7 @@ export const UtilsPermission = async (
     const details = await PermissionModel.Permission.findOne({
       permission_path: req.path,
     });
+    console.log('OOOOOOOO',req.path,details)
 
     if (
       details &&
