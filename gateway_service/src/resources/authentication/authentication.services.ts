@@ -58,12 +58,8 @@ export namespace AuthenticationServices {
   };
   export const SignInV2 = async (req: Request) => {
     try {
-      const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/googlesignin', req.body, { headers: req.headers });
-      return Promise.resolve({
-        message: authResponse.data.message,
-        token: authResponse.data.token,
-        url: authResponse.data.url,
-      });
+      const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/osignin', req.body, { headers: req.headers });
+      return Promise.resolve(authResponse.data);
 
     } catch (e) {
       // console.log('roshanError', e)

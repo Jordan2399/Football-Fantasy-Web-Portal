@@ -20,6 +20,7 @@ export const UtilsPermission = async (
     const publicPaths = [
       "/authentication/signup",
       "/authentication/signin",
+      "/authentication/osignin",
       "/authentication/forgotpassword",
       "/authentication/setpassword",
     ];

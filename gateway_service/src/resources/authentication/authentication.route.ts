@@ -118,7 +118,7 @@ export namespace AuthenticationRoute {
   ]);
   /**
    * @openapi
-   * '/resources/authentication/googlesignin':
+   * '/resources/authentication/osignin':
    *   post:
    *     tags:
    *       - Auth Controller
@@ -145,7 +145,7 @@ export namespace AuthenticationRoute {
  *       500:
  *         description: Server Error
  */
-  Index.post("/authentication/googlesignin", [
+  Index.post("/authentication/osignin", [
     AuthenticationController.GoogleSignIn
   ]);
 

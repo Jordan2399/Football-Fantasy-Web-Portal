@@ -136,12 +136,28 @@ export namespace AuthenticationServices {
 
 
       if (req.body?.gtoken) {
-        const user = await admin.auth().verifyIdToken(req.body.gtoken);
-        // user = {
+        console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
+        let user;
+        try {
+           user = await admin.auth().verifyIdToken(req.body.gtoken);
+          // If verification is successful, 'user' will contain the decoded token
+          console.log(user);
+        } catch (error) {
+          // If there's an error during verification, it will be caught here
+          return Promise.reject({
+            code: 400,
+            http_status_code: 404,
+            error: {
+              message: "Error verifying Code ",
+              path: "password",
+            },
+          });          // Handle the error as needed
+        }
+                // user = {
         //   email: decodedToken.email,
         //   // Add other properties as needed
         // };
-        console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
         admin.auth().verifyIdToken(req.body.gtoken).then((decodedToken) => {
           const uid = decodedToken.uid
           const email = decodedToken.email
@@ -152,7 +168,7 @@ export namespace AuthenticationServices {
 
           })
 
-        const existingUser = await userModel.User.findOne({ email: user.email });
+        const existingUser = await userModel.User.findOne({ email: user?.email });
         // const existingUser = 
 
 
