@@ -130,8 +130,8 @@ export namespace EventServices {
 
     export const GetEventsMatch = async (req: Request) => {
         try {
-            if (req.params.id) {
-                var match_id = req.params.id;
+            if (req.query.id) {
+                var match_id = req.query.id;
 
                 const getMatchInfo = async (matchId: string) => {
                     const matchInfo = await matchModel.Match.findById(matchId).populate('team1').populate('team2').exec();
@@ -150,7 +150,7 @@ export namespace EventServices {
                 //     });
                 // }
 
-                const matchInfo = await getMatchInfo(match_id);
+                const matchInfo = await getMatchInfo(match_id as string);
                 // console.log(matchInfo)
 
                 const formatEvents = async (match_id: string, teamInfo: any, teamplayers: any[]) => {
@@ -197,11 +197,11 @@ export namespace EventServices {
 
                 // const totalGoals = calculateTotalGoals(check_match);
 
-                const formattedEventsTeam1 = await formatEvents(match_id, matchInfo?.team1 || {}, matchInfo?.team1players || []);
-                const formattedEventsTeam2 = await formatEvents(match_id, matchInfo?.team2 || {}, matchInfo?.team2players || []);
+                const formattedEventsTeam1 = await formatEvents(match_id as string, matchInfo?.team1 || {}, matchInfo?.team1players || []);
+                const formattedEventsTeam2 = await formatEvents(match_id as string, matchInfo?.team2 || {}, matchInfo?.team2players || []);
 
-                const GoalTeam1 = await calculateTotalGoal(match_id, matchInfo?.team1players as any || []);
-                const GoalTeam2 = await calculateTotalGoal(match_id, matchInfo?.team2players as any || []);
+                const GoalTeam1 = await calculateTotalGoal(match_id as string, matchInfo?.team1players as any || []);
+                const GoalTeam2 = await calculateTotalGoal(match_id as string, matchInfo?.team2players as any || []);
 
                 // console.log('team1 events', GoalTeam1)
                 // console.log('team2 events', GoalTeam2)

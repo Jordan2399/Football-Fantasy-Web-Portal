@@ -1,12 +1,25 @@
 import axios, { AxiosError } from "axios";
 import { Request } from "express";
 
-export namespace PlayerServices {
 
-    export const CreatePlayer = async (req: Request) => {
+export namespace MatchServices {
+
+    export const GetUserHistory = async (req: Request) => {
+
+    };
+    export const GetMatchScoreBoard = async (req: Request) => {
+
+    };
+
+
+
+
+
+
+    export const CreateMatch = async (req: Request) => {
         console.log("DDDDDDDDDDDDDDDDDDDDDD", req.headers)
 
-        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/player';
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/match';
         try {
             if (Object.keys(req.query).length > 0) {
                 let isFirstQueryParam = true;
@@ -44,10 +57,11 @@ export namespace PlayerServices {
 
 
 
-    export const GetPlayer = async (req: Request) => {
+ 
+    export const GetMatch = async (req: Request) => {
         console.log("DDDDDDDDDDDDDDDDDDDDDD", req.body)
 
-        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/player';
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/match';
         try {
             if (Object.keys(req.query).length > 0) {
                 let isFirstQueryParam = true;
@@ -78,17 +92,109 @@ export namespace PlayerServices {
 
 
 
+    export const GetOngoingMatchByUser = async (req: Request) => {
+        console.log("DDDDDDDDDDDDDDDDDDDDDD", req.path)
+
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/user/ongoing_match';
+        try {
+            if (Object.keys(req.query).length > 0) {
+                let isFirstQueryParam = true;
+                Object.entries(req.query).forEach(([key, value]) => {
+                    url += `${isFirstQueryParam ? '?' : '&'}${key}=${value}`;
+                    isFirstQueryParam = false;
+                });
+            }
+            const authResponse = await axios.get(url, { headers: req.headers });
+            return Promise.resolve(authResponse.data);
+
+        } catch (e) {
+            console.log('roshanError', e)
+            if (axios.isAxiosError(e)) {
+                const axiosError = e as AxiosError;
+                if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+                    return Promise.reject({
+                        code: 400,
+                        http_status_code: axiosError.response.status,
+                        error: axiosError.response.data,
+                    })
+                }
+            }
+            return Promise.reject(e);
+        }
+    };
 
 
 
 
+    export const GetUpcomingMatchByUser = async (req: Request) => {
+        console.log("DDDDDDDDDDDDDDDDDDDDDD", req.path)
 
-  
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/user/upcoming_match';
+        try {
+            if (Object.keys(req.query).length > 0) {
+                let isFirstQueryParam = true;
+                Object.entries(req.query).forEach(([key, value]) => {
+                    url += `${isFirstQueryParam ? '?' : '&'}${key}=${value}`;
+                    isFirstQueryParam = false;
+                });
+            }
+            const authResponse = await axios.get(url, { headers: req.headers });
+            return Promise.resolve(authResponse.data);
 
-    export const DeletePlayer = async (req: Request) => {
+        } catch (e) {
+            console.log('roshanError', e)
+            if (axios.isAxiosError(e)) {
+                const axiosError = e as AxiosError;
+                if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+                    return Promise.reject({
+                        code: 400,
+                        http_status_code: axiosError.response.status,
+                        error: axiosError.response.data,
+                    })
+                }
+            }
+            return Promise.reject(e);
+        }
+    };
 
 
-        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/player';
+
+    export const PlayersByMatch = async (req: Request) => {
+        console.log("DDDDDDDDDDDDDDDDDDDDDD", req.body)
+
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/current_match_players';
+        try {
+            if (Object.keys(req.query).length > 0) {
+                let isFirstQueryParam = true;
+                Object.entries(req.query).forEach(([key, value]) => {
+                    url += `${isFirstQueryParam ? '?' : '&'}${key}=${value}`;
+                    isFirstQueryParam = false;
+                });
+            }
+            const authResponse = await axios.get(url, { headers: req.headers });
+            return Promise.resolve(authResponse.data);
+
+        } catch (e) {
+            console.log('roshanError', e)
+            if (axios.isAxiosError(e)) {
+                const axiosError = e as AxiosError;
+                if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+                    return Promise.reject({
+                        code: 400,
+                        http_status_code: axiosError.response.status,
+                        error: axiosError.response.data,
+                    })
+                }
+            }
+            return Promise.reject(e);
+        }
+    };
+
+
+    export const DeleteMatch = async (req: Request) => {
+
+
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/match';
 
 
         try {
@@ -129,22 +235,11 @@ export namespace PlayerServices {
 
     };
 
-
-
-
-
-
-
-
-
-
-
-
-    export const UpdatePlayer = async (req: Request) => {
+    export const UpdateMatch = async (req: Request) => {
 
         console.log("DDDDDDDDDDDDDDDDDDDDDD", req.headers)
 
-        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/player';
+        let url = process.env.MSMATCHURL + ':' + process.env.MSMATCHPORT + '/resources/match';
         try {
             if (Object.keys(req.query).length > 0) {
                 let isFirstQueryParam = true;

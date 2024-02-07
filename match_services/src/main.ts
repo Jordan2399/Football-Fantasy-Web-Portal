@@ -32,7 +32,7 @@ class Main extends ExpressConfig {
     this.app.use("/uploads", express.static("./uploads"));
     
     this.app.use("/resources", [
-      UtilsMSApi,
+      // UtilsMSApi,
       RoutesPrivateRoute.Index
     ])
     // this.app.use("/resources", [

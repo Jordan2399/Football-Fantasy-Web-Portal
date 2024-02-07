@@ -143,7 +143,7 @@ export namespace MatchServices {
 
 
     export const GetMatch = async (req: Request) => {
-        if (Object.keys(req.query).length > 0) {
+        if (Object.keys(req.query).length > 0 && !req.query.hasOwnProperty('id')) {
             console.log('i am from query', req.query)
             const filter = { ...req.query }
             try {
@@ -173,8 +173,8 @@ export namespace MatchServices {
                 return Promise.reject(e);
             }
         }
-        if (req.params.id) {
-            var id = req.params.id
+        if (req.query.id) {
+            var id = req.query.id
             try {
                 console.log(id)
                 const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
@@ -213,7 +213,7 @@ export namespace MatchServices {
 
     export const GetOngoingMatchByUser = async (req: Request) => {
 
-        // let user_id = 
+        console.log('ongoing match')
 
 
         try {
@@ -270,28 +270,30 @@ export namespace MatchServices {
     export const PlayersByMatch = async (req: Request) => {
 
         try {
-            if (req.query.match_id) {
-                var id = req.query.match_id
+            if (req.query.id) {
+                var id = req.query.id
                 var desiredPlayerType = req.query.player_type
 
                 console.log(id)
+                console.log(desiredPlayerType)
                 // const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
                 const check_match = await matchModel.Match.findById(id).populate('team1').populate('team1players').populate('team2').populate('team2players').exec();
-
-
+                
+                
                 let allPlayers;
                 let filteredPlayers;
-
-
+                
+                
                 if (check_match) {
                     // Use check_match safely here
                     const team1Players = check_match.team1players;
                     const team2Players = check_match.team2players;
                     allPlayers = [...(team1Players ?? []), ...(team2Players ?? [])];
                     filteredPlayers = allPlayers.filter(player => (player as any).player_type === desiredPlayerType);
-
+                    
                 }
-
+                console.log('check_match',filteredPlayers)
+                
 
 
 
@@ -320,7 +322,7 @@ export namespace MatchServices {
     export const DeleteMatch = async (req: Request) => {
 
         try {
-            let id = req.params.id
+            let id = req.query.id
             const check_match = await matchModel.Match.deleteOne({ _id: id });
 
             if (check_match.deletedCount === 0) {
@@ -346,7 +348,7 @@ export namespace MatchServices {
     export const UpdateMatch = async (req: Request) => {
         try {
             const check_match = await matchModel.Match.findOne({
-                _id: req.params?.id,
+                _id: req.query?.id,
             });
 
             if (check_match) {
@@ -358,9 +360,9 @@ export namespace MatchServices {
                 // const save_club = await new_club.save();
 
 
-                const result = await matchModel.Match.updateOne({ _id: req.params.id }, { $set: req.body })
+                const result = await matchModel.Match.updateOne({ _id: req.query.id }, { $set: req.body })
                 console.log(result)
-                const returnmatch = await matchModel.Match.findById(req.params.id);
+                const returnmatch = await matchModel.Match.findById(req.query.id);
 
 
                 return Promise.resolve(

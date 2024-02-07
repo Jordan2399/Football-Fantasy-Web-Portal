@@ -91,7 +91,7 @@ export namespace PlayerServices {
     export const DeletePlayer = async (req: Request) => {
 
         try {
-            let id = req.params.id
+            let id = req.query.id
             const check_player = await playerModel.Player.deleteOne({ _id: id });
 
             if (check_player.deletedCount === 0) {
@@ -117,7 +117,7 @@ export namespace PlayerServices {
     export const UpdatePlayer = async (req: Request) => {
         try {
             const check_player = await playerModel.Player.findOne({
-                _id: req.params?.id,
+                _id: req.query?.id,
             });
 
             if (check_player) {
@@ -129,9 +129,9 @@ export namespace PlayerServices {
                 // const save_club = await new_club.save();
 
 
-                const result = await playerModel.Player.updateOne({ _id: req.params.id }, { $set: req.body })
+                const result = await playerModel.Player.updateOne({ _id: req.query.id }, { $set: req.body })
                 console.log('RRRRR',result)
-                const returnPlayer = await playerModel.Player.findById(req.params.id);
+                const returnPlayer = await playerModel.Player.findById(req.query.id);
 
 
                 return Promise.resolve(

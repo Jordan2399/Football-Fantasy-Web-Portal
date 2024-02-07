@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   ClubRoute,
+  MatchRoute,
   PlayerRoute,
 
 } from "../../resources";
@@ -10,5 +11,6 @@ export namespace RoutesPrivateRoute {
   Index.use([
     ClubRoute.Index,
     PlayerRoute.Index,
+    MatchRoute.Index
   ]);
 }

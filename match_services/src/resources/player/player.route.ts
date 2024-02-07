@@ -16,8 +16,8 @@ export namespace PlayerRoute {
 
 
   
-  Index.delete("/player/:id", [UtilValidation.Id, PlayerController.DeletePlayer]);
-  Index.patch("/player/:id", [PlayerController.UpdatePlayer]);
+  Index.delete("/player", [UtilValidation.Id, PlayerController.DeletePlayer]);
+  Index.patch("/player", [PlayerController.UpdatePlayer]);
 
 
 
