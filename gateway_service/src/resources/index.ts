@@ -1,3 +1,4 @@
 export * from "./authentication/index.js";
-export * from "../../../user_service/src/resources/fantasy/index.js";
+export * from "./matches_services/club/index.js";
+export * from "./matches_services/player/index.js";
 

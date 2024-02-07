@@ -4,6 +4,7 @@ import { playerModel } from "../../database/models/player/player.model";
 export namespace PlayerServices {
 
     export const CreatePlayer = async (req: Request) => {
+        console.log("HHHHHHHHHHHHHHHHHHHHHHH",req.headers)
 
         try {
             const new_player = new playerModel.Player({ name: req.body.name, age: req.body.age, player_type: req.body.player_type, club_id: req.body.club_id });
@@ -20,8 +21,9 @@ export namespace PlayerServices {
             return Promise.reject(e);
         }
     };
+
     export const GetPlayer = async (req: Request) => {
-        if (Object.keys(req.query).length > 0) {
+        if (Object.keys(req.query).length > 0 && !req.query.hasOwnProperty('id')) {
             console.log('i am from query', req.query)
             const filter = { ...req.query }
             try {
@@ -51,8 +53,8 @@ export namespace PlayerServices {
                 return Promise.reject(e);
             }
         }
-        if (req.params.id) {
-            var id = req.params.id
+        if (req.query.id) {
+            var id = req.query.id
             try {
                 console.log(id)
                 const check_player = await playerModel.Player.findOne({_id:id}).populate('club_id').exec();

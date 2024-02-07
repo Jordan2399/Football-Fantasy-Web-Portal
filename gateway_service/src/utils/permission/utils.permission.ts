@@ -47,6 +47,7 @@ export const UtilsPermission = async (
       details.permission_method === (req.method as string) &&
       details.permission_status === "1"
     ) {
+      console.log('permission passed')
       next();
     } else {
       res.status(401).send("Not allowed: permission");

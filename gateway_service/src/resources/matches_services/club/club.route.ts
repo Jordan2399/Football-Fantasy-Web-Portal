@@ -8,6 +8,8 @@ import multer from "multer";
 export namespace ClubRoute {
   export const Index = Router();
 
+  
+
   /**
  * @openapi
  * '/heartcheck':
