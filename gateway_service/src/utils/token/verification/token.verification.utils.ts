@@ -20,6 +20,7 @@ export const TokenVerificationUtils = async (
       next();
       return;
     }
+    console.log('GGGGGGGGGGGGGGGGGGGGGGGGGGG',req.headers.authorization)
 
     // Check if Authorization header is present
     if (!req.headers.authorization) {

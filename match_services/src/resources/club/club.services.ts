@@ -192,8 +192,10 @@ export namespace ClubServices {
                 updateFields.image = `/uploads/private/images/${files.image[0].filename}`;
             }
 
+            console.log("krishna",req)
+
             const check_club = await clubModel.Club.findOneAndUpdate(
-                { _id: req.params?.id },
+                { _id: req.query?.id },
                 { $set: updateFields },
                 { new: true }
             );

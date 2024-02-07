@@ -46,6 +46,20 @@ export namespace ClubRoute {
 
 
   Index.delete("/club", [UtilValidation.Id, ClubController.DeleteClub]);
+  
+
+  Index.post('/club', [
+    ClubImage.fields([
+      { name: 'image', maxCount: 1 }
+    ]), validateRequest(ClubValidation.CreateClub), ClubController.CreateClub
+  ]);
+
+
+
+  Index.patch("/club", [ClubImage.fields([
+    { name: 'image', maxCount: 1 }
+  ]), ClubController.UpdateClub]);
+
 
 
 
