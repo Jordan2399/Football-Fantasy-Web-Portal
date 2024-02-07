@@ -8,7 +8,7 @@
   "include": [
     "./src/**/*",
     "./src/index.d.ts"
-  ],
+, "../user_service/src/resources/fantasy"  ],
   "exclude": [
     "node_modules"
   ]
