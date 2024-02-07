@@ -3,6 +3,7 @@ import {
   ClubRoute,
   MatchRoute,
   PlayerRoute,
+  EventRoute,
 
 } from "../../resources";
 // import { ClubRoute } from "../../resources/club";
@@ -11,6 +12,7 @@ export namespace RoutesPrivateRoute {
   Index.use([
     ClubRoute.Index,
     PlayerRoute.Index,
-    MatchRoute.Index
+    MatchRoute.Index,
+    EventRoute.Index
   ]);
 }

@@ -7,9 +7,32 @@ export namespace EventRoute {
   export const Index = Router();
 
 
+ /**
+   * @openapi
+   * paths:
+   *   /resources/event:
+   *     get:
+   *       tags:
+   *         - Event Controller
+   *       summary: Get events
+   *       parameters:
+   *         - in: query
+   *           name: id
+   *           required: true
+   *           schema:
+   *             type: string
+   *             default: 65be577cc4df1957c9bda162
+   *           description: ID of the user 
+   *       responses:
+   *         201:
+   *           description: Created
+   *         500:
+   *           description: Internal Server Error
+  */
+
 
   // Index.get("/event", [MatchController.GetMatch]);
-  Index.get("/event/:id", [EventController.GetEventsMatch]);
+  Index.get("/event", [EventController.GetEventsMatch]);
   // Index.get("/club/search", [ClubController.GetClub]);
 
 
@@ -22,7 +45,7 @@ export namespace EventRoute {
  *   /resources/event:
  *     post:
  *       tags:
- *         - event Controller
+ *         - Event Controller
  *       summary: Insert a new event
  *       requestBody:
  *         required: true
@@ -31,39 +54,26 @@ export namespace EventRoute {
  *             schema:
  *               type: object
  *               required:
- *                 - team1
- *                 - team2
- *                 - team1players
- *                 - team2players
- *                 - dateTime
+ *                 - match_id
+ *                 - player_id
+ *                 - activity_type
  *               properties:
- *                 team1:
+ *                 match_id:
  *                   type: string
- *                   example: 'ClubA'
- *                 team2:
+ *                   example: '65bed524f58466a5bf43e262'
+ *                 player_id:
  *                   type: string
- *                   example: 'ClubB'
- *                 team1players:
- *                   type: array
- *                   items:
- *                     type: string
- *                   example: ['player1', 'player2']
- *                 team2players:
- *                   type: array
- *                   items:
- *                     type: string
- *                   example: ['player3', 'player4']
- *                 dateTime:
+ *                   example: '65bb4fb11833e66d62c154aa'
+ *                 activity_type:
  *                   type: string
- *                   format: date-time
- *                   example: '2024-01-22T12:00:00Z'
+ *                   default: goal
  *       responses:
  *         201:
  *           description: Created
  *         500:
  *           description: Internal Server Error
  */
-
+ 
   Index.post("/event", [ EventController.CreateEvent]);
   // Index.delete("/match/:id", [UtilValidation.Id, EventController.DeleteEvent]);
 

@@ -129,10 +129,13 @@ export namespace EventServices {
 
 
     export const GetEventsMatch = async (req: Request) => {
+        console.log(req.query.id)
         try {
             if (req.query.id) {
+                console.log('inside',req.query.id)
                 var match_id = req.query.id;
 
+                console.log(match_id)
                 const getMatchInfo = async (matchId: string) => {
                     const matchInfo = await matchModel.Match.findById(matchId).populate('team1').populate('team2').exec();
                     return matchInfo;

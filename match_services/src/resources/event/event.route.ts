@@ -10,7 +10,7 @@ export namespace EventRoute {
 
 
   // Index.get("/event", [MatchController.GetMatch]);
-  Index.get("/event/:id", [EventController.GetEventsMatch]);
+  Index.get("/event", [EventController.GetEventsMatch]);
   // Index.get("/club/search", [ClubController.GetClub]);
 
 

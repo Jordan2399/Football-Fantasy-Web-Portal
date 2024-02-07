@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthenticationRoute, ClubRoute, MatchRoute, PlayerRoute } from "../../resources";
+import { AuthenticationRoute, ClubRoute, EventRoute, MatchRoute, PlayerRoute } from "../../resources";
 
 export namespace RoutesPrivateRoute {
   export const Index = Router();
@@ -7,6 +7,7 @@ export namespace RoutesPrivateRoute {
     AuthenticationRoute.Index,
     PlayerRoute.Index,
     ClubRoute.Index,
-    MatchRoute.Index
+    MatchRoute.Index,
+    EventRoute.Index
   ]);
 }
