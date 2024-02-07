@@ -4,6 +4,33 @@ import { MatchServices } from "./match.services";
 export namespace MatchController {
 
 
+
+    export const GetOngoingMatchByUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(200).json(await MatchServices.GetOngoingMatchByUser(req));
+        } catch (e) {
+            next(e);
+        }
+    };
+    export const GetUpcomingMatchByUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            res.status(200).json(await MatchServices.GetUpcomingMatchByUser(req));
+        } catch (e) {
+            next(e);
+        }
+    };
+
+
+
+
     export const CreateMatch = async (
         req: Request,
         res: Response,
@@ -50,7 +77,7 @@ export namespace MatchController {
 
 
 
-    
+
 
 
 
