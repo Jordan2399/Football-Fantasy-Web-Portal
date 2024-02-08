@@ -133,9 +133,84 @@ export namespace AuthenticationServices {
 
 
   export const SetPassword = async (req: Request) => {
-    console.log('asdf',process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/setpassword')
+    console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/setpassword')
     try {
       const authResponse = await axios.post(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/setpassword', req.body, { headers: req.headers });
+      return Promise.resolve({
+        message: authResponse.data.message,
+      });
+
+    } catch (e) {
+      console.log('roshanError', e)
+      if (axios.isAxiosError(e)) {
+        const axiosError = e as AxiosError;
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
+        }
+      }
+      return Promise.reject(e);
+    }
+  };
+
+
+
+  export const Profile = async (req: Request) => {
+    console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/profile')
+    try {
+      const authResponse = await axios.get(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/profile', { headers: req.headers });
+      return Promise.resolve(authResponse.data);
+
+    } catch (e) {
+      console.log('roshanError', e)
+      if (axios.isAxiosError(e)) {
+        const axiosError = e as AxiosError;
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
+        }
+      }
+      return Promise.reject(e);
+    }
+  };
+
+
+  export const ProfileUpdate = async (req: Request) => {
+    console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/profile')
+    try {
+      const authResponse = await axios.patch(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/profile', req.body, { headers: req.headers });
+      return Promise.resolve({
+        message: authResponse.data.message,
+      });
+
+    } catch (e) {
+      console.log('roshanError', e)
+      if (axios.isAxiosError(e)) {
+        const axiosError = e as AxiosError;
+        if (axiosError.response && axiosError.response.status >= 400 && axiosError.response.status < 500) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: axiosError.response.status,
+            error: axiosError.response.data,
+          })
+        }
+      }
+      return Promise.reject(e);
+    }
+  };
+
+
+
+  export const UpdatePassword = async (req: Request) => {
+    console.log('asdf', process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/updatepassword')
+    try {
+      const authResponse = await axios.patch(process.env.MSUSERURL + ':' + process.env.MSUSERPORT + '/resources/authentication/updatepassword', req.body, { headers: req.headers });
       return Promise.resolve({
         message: authResponse.data.message,
       });

@@ -8,6 +8,8 @@ export const UtilsMSApi = async (
 
   try {
     console.log("process.env.MSTYPE", process.env.MSTYPE)
+    console.log("path ", req.path)
+    console.log("method", req.method)
     if (process.env.MSTYPE === "gateway") {
       const details = await PermissionModel.Permission.findOne({
         permission_path: req.path,

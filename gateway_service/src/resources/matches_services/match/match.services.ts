@@ -5,11 +5,96 @@ import { Request } from "express";
 export namespace MatchServices {
 
     export const GetUserHistory = async (req: Request) => {
+        try {
+            const history = {
+                "stat": {
+                    "total_score": "20",
+                    "total_match": "5"
+                },
+                "history": [
+                    {
+                        "team1": {
+                            "name": "Team1Name1",
+                            "image": "Team1Image1",
+                            "goal": "1"
+                        },
+                        "team2": {
+                            "name": "Team2Name1",
+                            "image": "Team2Image1",
+                            "goal": "2"
+                        },
+                        "score": "80"
+                    },
+                    {
+                        "team1": {
+                            "name": "Team1Name2",
+                            "image": "Team1Image2",
+                            "goal": "3"
+                        },
+                        "team2": {
+                            "name": "Team2Name2",
+                            "image": "Team2Image2",
+                            "goal": "4"
+                        },
+                        "score": "120"
+                    },
+                    {
+                        "team1": {
+                            "name": "Team1Name3",
+                            "image": "Team1Image3",
+                            "goal": "5"
+                        },
+                        "team2": {
+                            "name": "Team2Name3",
+                            "image": "Team2Image3",
+                            "goal": "6"
+                        },
+                        "score": "90"
+                    }
+                ]
+            }
 
+
+            return Promise.resolve(
+                history
+            );
+
+        } catch (e) {
+            return Promise.reject(e);
+        }
     };
     export const GetMatchScoreBoard = async (req: Request) => {
+        try {
+            const scoreboard = [
+                {
+                    "name": "roshan",
+                    "score": "30"
+                },
+                {
+                    "name": "john",
+                    "score": "45"
+                },
+                {
+                    "name": "emma",
+                    "score": "22"
+                },
+                {
+                    "name": "alex",
+                    "score": "50"
+                }
+            ]
 
+
+
+            return Promise.resolve(
+                scoreboard
+            );
+
+        } catch (e) {
+            return Promise.reject(e);
+        }
     };
+
 
 
 

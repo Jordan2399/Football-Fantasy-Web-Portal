@@ -219,6 +219,7 @@ export namespace MatchServices {
         try {
             let check_match: Type.ScoreExtendedMatch[] = await matchModel.Match.find({ status: 0 }).populate('team1').populate('team2').exec();
             const plainMatchObjects = check_match.map(match => JSON.parse(JSON.stringify(match)));
+            console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR',plainMatchObjects)
 
             const matchesWithScore: Type.ScoreExtendedMatch[] = plainMatchObjects.map(match => ({
                 ...match,
@@ -235,6 +236,11 @@ export namespace MatchServices {
             return Promise.reject(e);
         }
     };
+
+
+
+
+
     export const GetUpcomingMatchByUser = async (req: Request) => {
         try {
             const pageNo = parseInt(req.query.page_no as string, 10) || 1;

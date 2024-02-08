@@ -242,4 +242,11 @@ export namespace AuthenticationRoute {
     validateRequest(AuthenticationValidation.ProfileUpdate),
     AuthenticationController.ProfileUpdate,
   ]);
+
+
+  Index.patch("/authentication/updatepassword", [
+    validateRequest(AuthenticationValidation.UpdatePassword),
+    AuthenticationController.UpdatePassword,
+  ]);
+
 }

@@ -20,7 +20,7 @@ class Main extends ExpressConfig {
     this.app.use(
       cors({
         origin: [
-          "http://localhost:3000/api"
+          "http://localhost:3000"
         ],
       })
     );
@@ -31,8 +31,8 @@ class Main extends ExpressConfig {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use("/resources", [
       UtilsMSApi,
-      TokenVerificationUtils,
-      UtilsPermission,
+      // TokenVerificationUtils,
+      // UtilsPermission,
       RoutesPrivateRoute.Index])
     this.app.use(UtilsError);
 
