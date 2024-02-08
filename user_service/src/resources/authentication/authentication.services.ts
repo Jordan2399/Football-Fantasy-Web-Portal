@@ -1,6 +1,8 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { userModel } from "../../database/models/user/user.model";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
 import bcrypt from "bcrypt";
 import { userTypeModel } from "../../database/models/userType/userType.model";
 import { ForgotPasswordEmailHelper } from "../../helper";
@@ -10,6 +12,8 @@ import { initializeApp } from "firebase-admin/app";
 import { error } from "console";
 import { getAuth, EmailSignInProviderConfig } from "firebase-admin/auth";
 import admin from "../../utils/firebase/config";
+import { token } from "morgan";
+import { isTokenExpired } from "../../utils/token/validation/token.validation.utils";
 
 
 
@@ -72,11 +76,14 @@ export namespace AuthenticationServices {
   export const SignIn = async (req: Request) => {
 
 
-    console.log('user ms sign in', req)
+    console.log('***************************************user ms sign in', req.body)
+
+
     try {
       const check_user = await userModel.User.findOne({
         $or: [{ email: req.body?.uid }, { username: req.body?.uid }],
       });
+      console.log('***************************************user ms sign in', check_user)
       if (check_user) {
         const match = await bcrypt.compare(
           req.body.password,
@@ -93,13 +100,13 @@ export namespace AuthenticationServices {
           });
         }
 
-        const role = await userTypeModel.UserType.findOne({ uid: check_user._id })
-        console.log(role?.role)
+        // const role = await userTypeModel.UserType.findOne({ uid: check_user._id })
+        console.log(check_user.role)
 
         const accessToken = jwt.sign(
           {
             id: check_user._id,
-            role: role?.role,
+            role: check_user.role,
           },
           process.env.JWT as string,
           {
@@ -111,7 +118,7 @@ export namespace AuthenticationServices {
         return Promise.resolve({
           message: "Sign in successful",
           token: accessToken,
-          url: role?.role === "user" ? "/dashboard" : "/system/dashboard",
+          url: check_user?.role === "user" ? "/dashboard" : "/system/dashboard",
         });
       }
       if (!check_user) {
@@ -136,23 +143,39 @@ export namespace AuthenticationServices {
 
 
       if (req.body?.gtoken) {
-        const user = await admin.auth().verifyIdToken(req.body.gtoken);
+        console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
+        let user;
+        try {
+          user = await admin.auth().verifyIdToken(req.body.gtoken);
+          // If verification is successful, 'user' will contain the decoded token
+          console.log(user);
+        } catch (error) {
+          // If there's an error during verification, it will be caught here
+          return Promise.reject({
+            code: 400,
+            http_status_code: 404,
+            error: {
+              message: "Error verifying Code ",
+              path: "password",
+            },
+          });          // Handle the error as needed
+        }
         // user = {
         //   email: decodedToken.email,
         //   // Add other properties as needed
         // };
-        console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
         admin.auth().verifyIdToken(req.body.gtoken).then((decodedToken) => {
           const uid = decodedToken.uid
           const email = decodedToken.email
           console.log(email)
         })
           .catch((error) => {
-            console.log("ssssssssssssssssssssssssssssssssssss",error)
+            console.log("ssssssssssssssssssssssssssssssssssss", error)
 
           })
 
-        const existingUser = await userModel.User.findOne({ email: user.email });
+        const existingUser = await userModel.User.findOne({ email: user?.email });
         // const existingUser = 
 
 
@@ -182,9 +205,9 @@ export namespace AuthenticationServices {
           console.log('Testing Google', user)
           const defaultRole = 'user';
           const user_details = {
-            first_name:user?.name,
-            email:user?.email,
-            role:defaultRole
+            first_name: user?.name,
+            email: user?.email,
+            role: defaultRole
           }
           const new_user = new userModel.User(user_details);
           const save_user = await new_user.save();
@@ -271,6 +294,21 @@ export namespace AuthenticationServices {
   };
 
 
+
+  // function isTokenExpired(token: string): boolean {
+  //   try {
+  //     const decoded = jwt.decode(token) as JwtPayload | null;
+  //     if (!decoded || !decoded.exp) {
+  //       return true; // Token or expiration claim not found, consider it expired
+  //     }
+  //     const expirationTime = decoded.exp * 1000; // Convert seconds to milliseconds
+  //     const currentTime = Date.now();
+  //     return expirationTime < currentTime; // True if token is expired, false otherwise
+  //   } catch (error) {
+  //     return true; // Error decoding token, consider it expired
+  //   }
+  // }
+
   export const ForgotPassword = async (req: Request) => {
     console.log('RRRROOOORORORORO', req.body)
 
@@ -280,10 +318,11 @@ export namespace AuthenticationServices {
       });
 
       if (check_email) {
-        const check_forgot_password_session =
-          await SessionModel.ForgotPassword.findOne({
-            session_email: check_email.email,
-          });
+        const check_forgot_password_session = await SessionModel.ForgotPassword.findOne({
+          session_email: check_email.email,
+        });
+
+        console.log(isTokenExpired(check_forgot_password_session?.session_verification_key))
 
         const forgot_password_token = jwt.sign(
           {
@@ -296,30 +335,40 @@ export namespace AuthenticationServices {
             expiresIn: "1d",
           }
         );
-        if (!check_forgot_password_session) {
+
+        if (!check_forgot_password_session || isTokenExpired(check_forgot_password_session?.session_verification_key)) {
+          if (check_forgot_password_session && isTokenExpired(check_forgot_password_session?.session_verification_key)) {
+            // Delete the previous session if the token is expired
+            await SessionModel.ForgotPassword.deleteOne({ session_email: check_email.email });
+          }
+
           const new_session_forgot_password = new SessionModel.ForgotPassword({
             session_email: check_email.email,
             session_verification_key: forgot_password_token,
           });
 
-          const save_session_forgot_password =
-            await new_session_forgot_password.save();
+          const save_session_forgot_password = await new_session_forgot_password.save();
 
+          console.log('email sent with new token is does not exist')
           await ForgotPasswordEmailHelper({
             user_email: save_session_forgot_password.session_email as string,
-            verification_token:
-              save_session_forgot_password.session_verification_key as string,
+            verification_token: save_session_forgot_password.session_verification_key as string,
+          });
+
+        } else {
+          console.log('email sent with new token if already exists')
+          await ForgotPasswordEmailHelper({
+            user_email: check_forgot_password_session?.session_email as string,
+            verification_token: check_forgot_password_session?.session_verification_key as string,
           });
         }
-        await ForgotPasswordEmailHelper({
-          user_email: check_forgot_password_session?.session_email as string,
-          verification_token:
-            check_forgot_password_session?.session_verification_key as string,
-        });
+
+
         return Promise.resolve({
           message: "Forgot Password Email Sent On your Email Address",
         });
       }
+
       return Promise.reject({
         code: 400,
         http_status_code: 409,
@@ -335,7 +384,6 @@ export namespace AuthenticationServices {
 
 
 
-
   export const SetPassword = async (req: Request) => {
     try {
       return jwt.verify(
@@ -343,6 +391,7 @@ export namespace AuthenticationServices {
         process.env.JWT as string,
         async (err: any, decoded: any) => {
           if (err) {
+            console.log(err);
             return Promise.reject({
               code: 400,
               http_status_code: 406,
@@ -353,10 +402,26 @@ export namespace AuthenticationServices {
             });
           } else {
             const { email } = decoded;
+            const sessionData = await SessionModel.ForgotPassword.findOne({ session_email: email });
+
+            if (!sessionData) {
+              return Promise.reject({
+                code: 400,
+                http_status_code: 404,
+                error: {
+                  message: "Session data not found",
+                  path: "session",
+                },
+              });
+            }
+
             await userModel.User.updateOne(
               { email: email },
               { $set: { password: req.body.new_password } }
             );
+
+            // Delete the session record after successfully updating the password
+            await SessionModel.ForgotPassword.deleteOne({ session_email: email });
 
             return Promise.resolve({
               message: "Password updated successfully",
@@ -368,6 +433,7 @@ export namespace AuthenticationServices {
       return Promise.reject(e);
     }
   };
+
 
 
 
@@ -400,4 +466,166 @@ export namespace AuthenticationServices {
     }
   };
 
+  export const Profile = async (req: Request) => {
+    // console.log('headassssssssssssssssssssssssssssssssss', req.query.id)
+
+    const isExpired = isTokenExpired(req.headers.authorization as string)
+
+    // console.log('asdfsdf',req.headers.authorization)
+    // console.log('asdfff', isExpired)
+
+
+
+    // const decoded = jwt.decode((req.headers.authorization as string).split(' ')[1]) as JwtPayload | null;
+    // console.log('Roshan Devkota', decoded)
+
+
+    try {
+      if (!isExpired) {
+        let token = (req.headers.authorization as string).split(' ')[1]
+
+
+        let aaa = jwt.verify(
+          token,
+          process.env.JWT as string) as JwtPayload;
+
+
+
+
+
+
+
+
+        // const decoded = jwt.decode((req.headers.authorization as string).split(' ')[1], process.env.JWT);
+        // const decoded = jwt.decode(req.headers.authorization as string) as JwtPayload | null;
+
+
+        // const decoded = jwt.decode(tokenPart) as JwtPayload | null;
+
+
+
+        const check_user = await userModel.User.findById(aaa.id).select('-password')
+        // const check_user = null;
+        console.log("users", check_user)
+        if (check_user)
+          return Promise.resolve({
+            message: 'success',
+            data: check_user
+          });
+
+
+        if (!check_user) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: 404,
+            error: {
+              message: "User does not exist",
+              path: "uid",
+            },
+          });
+        }
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+
+  export const ProfileUpdate = async (req: Request) => {
+    const isExpired = isTokenExpired(req.headers.authorization as string)
+    // console.log("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",isExpired)
+    try {
+      if (!isExpired) {
+        let token = (req.headers.authorization as string).split(' ')[1]
+        
+        
+        let aaa = jwt.verify(
+          token,
+          process.env.JWT as string) as JwtPayload;
+          const check_player = await userModel.User.findOne({
+            _id: aaa.id,
+          });
+          console.log("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",check_player)
+          
+        if (check_player) {
+          const user_details = req.body;
+
+          console.log(user_details)
+
+          // const new_club = new clubModel.Club(club_details);
+          // const save_club = await new_club.save();
+
+
+          const result = await userModel.User.updateOne({ _id: aaa.id }, { $set: req.body })
+          console.log('RRRRR', result)
+          const returnUser = await userModel.User.findById(req.query.id).select('-password');
+
+
+          return Promise.resolve(
+            {
+              'data': returnUser,
+              'message': 'User Edited Successfully',
+              'url': '/dashboard/details'
+            }
+
+          );
+        }
+        if (!check_player) {
+          return Promise.reject({
+            code: 400,
+            http_status_code: 404,
+            error: {
+              message: "User does not exist",
+              path: "name",
+            },
+          });
+        }
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
+
+
+  export const UpdatePassword = async (req: Request, res: Response) => {
+    const isExpired = isTokenExpired(req.headers.authorization as string)
+    try {
+      if (!isExpired) {
+        let token = (req.headers.authorization as string).split(' ')[1]
+
+
+        let aaa = jwt.verify(
+          token,
+          process.env.JWT as string) as JwtPayload;
+
+        const check_user = await userModel.User.findById(aaa.id);
+        console.log(check_user);
+        if (check_user) {
+          const match = await bcrypt.compare(
+            req.body.current_password,
+            check_user.password as string
+          );
+          if (!match) {
+            return Promise.reject({
+              code: 400,
+              http_status_code: 409,
+              error: "Password not match ",
+            });
+          }
+
+          const hashedPassword = await bcrypt.hash(req.body.new_password, 8);
+
+          await check_user.updateOne({
+            password: hashedPassword,
+          });
+          return Promise.resolve({
+            message: "Password Updated",
+          });
+        }
+      }
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 }

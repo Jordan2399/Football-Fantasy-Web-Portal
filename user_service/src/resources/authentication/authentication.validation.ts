@@ -63,4 +63,30 @@ export namespace AuthenticationValidation {
         path: ["cnf_password"],
       }),
   };
+
+  export const ProfileUpdate = {
+    body: z
+      .object({
+        name: z.optional(z.string()),
+        first_name: z.optional(z.string()),
+        last_name: z.optional(z.string()),
+        dob: z.optional(z.string()),
+        gender: z.optional(z.enum(["male", "female", "other"])),
+      })
+      .strict()
+  };
+
+  export const UpdatePassword = {
+    body: z
+      .object({
+        current_password: z.string(),
+        new_password: z.string(),
+        cnf_password: z.string(),
+      })
+      .strict()
+      .refine((data) => data.new_password === data.cnf_password, {
+        message: "Passwords don't match",
+        path: ["cnf_password"],
+      }),
+  };
 }

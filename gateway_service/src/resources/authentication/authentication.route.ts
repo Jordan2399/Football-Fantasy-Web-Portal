@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AuthenticationController, AuthenticationServices, AuthenticationValidation } from "./index.js";
+import { AuthenticationController, AuthenticationServices } from "./index.js";
 import { validateRequest } from "zod-express-middleware";
 
 export namespace AuthenticationRoute {
@@ -99,10 +99,10 @@ export namespace AuthenticationRoute {
  *             properties:
  *               uid:
  *                 type: string
- *                 default: johndoe
+ *                 default: devkkali@gmail.com
  *               password:
  *                 type: string
- *                 default: johnDoe20!@
+ *                 default: testpass1
  *     responses:
  *       200:
  *         description: OK
@@ -118,7 +118,7 @@ export namespace AuthenticationRoute {
   ]);
   /**
    * @openapi
-   * '/resources/authentication/googlesignin':
+   * '/resources/authentication/osignin':
    *   post:
    *     tags:
    *       - Auth Controller
@@ -145,7 +145,7 @@ export namespace AuthenticationRoute {
  *       500:
  *         description: Server Error
  */
-  Index.post("/authentication/googlesignin", [
+  Index.post("/authentication/osignin", [
     AuthenticationController.GoogleSignIn
   ]);
 
@@ -263,4 +263,25 @@ export namespace AuthenticationRoute {
   Index.get("/authentication/users", [
     AuthenticationController.Users
   ]);
+
+
+
+
+
+
+
+  Index.get("/authentication/profile", [
+    AuthenticationController.Profile,
+  ]);
+
+
+  Index.patch("/authentication/profile", [
+    AuthenticationController.ProfileUpdate,
+  ]);
+
+  Index.patch("/authentication/updatepassword", [
+    AuthenticationController.UpdatePassword,
+  ]);
+
+
 }

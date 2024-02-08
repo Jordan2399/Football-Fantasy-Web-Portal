@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import e, { NextFunction, Request, Response } from "express";
 
 export const UtilsError = async (
   err: any,
@@ -13,6 +13,7 @@ export const UtilsError = async (
         ...err.error,
       });
     } else {
+      console.log(err)
       res.status(500).send("Internal Server Error");
     }
   } catch (e) {
