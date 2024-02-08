@@ -93,7 +93,7 @@ export namespace ClubServices {
             }
         }
         if (req.query.id) {
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%i am from query2', req.query)
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% i am from query2', req.query)
 
             var id = req.query.id;
             try {
