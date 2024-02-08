@@ -1,7 +1,9 @@
 "use client";
+
+"use client";
 import React from "react";
 import { Button } from "@/components/button";
-import { SignInSchema, SignInSchemaType } from "@/validation/form.validation";
+import { CreateClubSchema } from "@/validation/form.validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { TextBox } from "@/components/textbox";
@@ -11,38 +13,42 @@ import { AuthenticationServices } from "@/services/authentication/authentication
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
-export const SignInScreenForm = () => {
-  
+import { FileUpload } from "@/components/fileupload/fileupload";
+import { ClubServices } from "@/services/club/club.services";
+import { ClubServicesType } from "@/services/club/type";
+import toast from "react-hot-toast";
+export const CreateClubScreenForm = () => {
   const router = useRouter();
-  
-  const {control, 
+
+  const {
+    control,
+    register,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    reset,
+    formState: { errors },
     setError,
-  } = useForm<SignInSchemaType>({
-    resolver: yupResolver(SignInSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
+  } = useForm<ClubServicesType.Create>({
+    resolver: yupResolver(CreateClubSchema),
     mode: "all",
   });
-  const { mutateAsync, isPending } = useMutation<
-    AuthenticationServicesType.SignInRes,
+  const { mutateAsync, isPending, isSuccess } = useMutation<
+    ClubServicesType.ClubRes,
     Error,
-    AuthenticationServicesType.SignInProps
+    ClubServicesType.Create
   >({
-    mutationFn: (variables) => AuthenticationServices.SignIn(variables),
+    mutationFn: (variables) => ClubServices.Create(variables),
     onSuccess: (data) => {
-      Cookies.set("token", data.token);
-      router.replace(data.url);
+      toast.success(data.message);
+      reset({
+        name: "",
+        image: "",
+      });
     },
     onError: (error) => {
       const AxiosErr = error as AxiosError;
       const err = AxiosErr?.response?.data as {
         message: string;
-        path: "username" | "password";
+        path: "name" | "image";
       };
       setError(err.path, {
         type: "manual",
@@ -50,9 +56,13 @@ export const SignInScreenForm = () => {
       });
     },
   });
-  const onSubmit: SubmitHandler<SignInSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<ClubServicesType.Create> = async (data) => {
     try {
-      await mutateAsync(data);
+      console.log(data.image);
+      await mutateAsync({
+        name: data.name,
+        image: data.image[0],
+      });
     } catch (e) {}
   };
   return (
@@ -62,48 +72,38 @@ export const SignInScreenForm = () => {
     >
       <div className={"w-full h-[50px]"}>
         <Controller
-          name={"username"}
+          name={"name"}
           control={control}
           render={({ field }) => (
             <TextBox
-              id="email"
+              {...field}
+              id="name"
               disabled={isPending}
               variation="standard"
-              placeholder="Enter Email Or Username"
-              label="Email / Username"
-              {...field}
-              errormessage={errors.username && errors.username?.message}
+              placeholder="Enter Unique Club Name"
+              label="Club Name"
+              errormessage={errors.name && errors.name?.message}
             />
           )}
         />
       </div>
       <div className={"w-full h-[50px]"}>
-        <Controller
-          name={"password"}
-          control={control}
-          render={({ field }) => (
-            <TextBox
-              link={{
-                name: "Forgot Password?",
-                path: "#",
-              }}
-              disabled={isPending}
-              id="password"
-              variation="password"
-              placeholder="Enter Password"
-              label="Password"
-              {...field}
-              errormessage={errors.password && errors.password?.message}
-            />
-          )}
+        <FileUpload
+          accept="image/png, image/jpeg, image/jpg"
+          type={"file"}
+          errormessage={errors.image && (errors.image.message as string)}
+          label={"Club Image"}
+          {...register("image")}
         />
       </div>
       <div className={"w-full h-[50px]"}>
         <Button
           type="submit"
           variation={isPending ? "loading-standard" : "standard"}
+          isLoading={isPending}
+          isSuccess={isSuccess}
         >
-          Submit
+          Create
         </Button>
       </div>
     </form>

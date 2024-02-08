@@ -10,11 +10,18 @@ export namespace ClubServicesType {
     name: string;
     image: any;
   }
+  export interface Player {
+    _id: string;
+    name: string;
+    age: string;
+    player_type: string;
+  }
+
   export interface Details {
     _id: string;
     name: string;
     image: string;
-    players: [];
+    players: Player[];
   }
   export interface Update {
     _id: string;

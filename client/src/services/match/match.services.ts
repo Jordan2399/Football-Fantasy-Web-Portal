@@ -65,4 +65,12 @@ export namespace MatchServices {
       return Promise.reject(e);
     }
   };
+  export const Delete = async (data: { _id: string }) => {
+    try {
+      const res = await api.delete(`/match/${data._id}`);
+      return Promise.resolve(res.data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 }
