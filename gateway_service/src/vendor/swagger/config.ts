@@ -43,7 +43,7 @@ function swaggerDocs(app: Express, port: number) {
     res.send(swaggerSpec);
   });
 
-  console.log(`Docs available at http://localhost:${port}/docs`);
+  console.log(`Gateway Docs available at http://localhost:${port}/docs`);
 }
 
 
@@ -67,6 +67,8 @@ function getRouteFiles(): string[] {
   }
 
   const routeFiles = findRouteFiles(resourcePath);
+  console.log(routeFiles)
+
   return routeFiles;
 }
 
