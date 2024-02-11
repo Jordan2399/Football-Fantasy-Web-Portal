@@ -51,4 +51,18 @@ export namespace UserSchema {
     this.password = await bcrypt.hash(String(this.password), 8);
     next();
   });
+
+
+  User.pre("updateOne", async function(next) {
+    const update = this.getUpdate() as { $set?: { password?: string } };
+    console.log('pppppppppppppppp', update);
+    if (!update.$set || !update.$set.password) return next();
+    console.log('QQQQQQQQQQQQQQQQQ', update);
+  
+    update.$set.password = await bcrypt.hash(String(update.$set.password), 8);
+    next();
+  });
+  
+
+
 }
