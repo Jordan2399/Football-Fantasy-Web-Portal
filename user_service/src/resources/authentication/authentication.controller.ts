@@ -31,6 +31,20 @@ export namespace AuthenticationController {
   };
 
 
+  export const GoogleSignIn = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    // console.log('sign in from controller')
+    try {
+      res.status(200).json(await AuthenticationServices.SignInV2(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+
 
 
 
@@ -77,5 +91,50 @@ export namespace AuthenticationController {
       next(e);
     }
   };
+
+  export const Profile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.Profile(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+  export const ProfileUpdate = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res.status(200).json(await AuthenticationServices.ProfileUpdate(req));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+
+
+
+  
+  export const UpdatePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      res
+        .status(200)
+        .json(await AuthenticationServices.UpdatePassword(req, res));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+
+
+  
 
 }

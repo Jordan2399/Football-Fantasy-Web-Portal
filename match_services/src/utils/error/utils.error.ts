@@ -9,10 +9,10 @@ export const UtilsError = async (
   try {
     if (err.code === 400) {
       res.status(err.http_status_code).json({
-        error: err.error,
+       ...err.error,
       });
     } else {
-      res.status(500).send("Internal Server Error");
+      res.status(500).json(err);
     }
   } catch (e) {
     next(e);

@@ -28,3 +28,27 @@ export const ForgotPasswordSchema = Yup.object({
 export type ForgotPasswordSchemaType = Yup.InferType<
   typeof ForgotPasswordSchema
 >;
+
+export const CreateClubSchema = Yup.object().shape({
+  name: Yup.string().required(),
+  image: Yup.mixed().required(),
+});
+export type CreateAndEditClubSchemaType = Yup.InferType<
+  typeof CreateClubSchema
+>;
+
+export const EditClubSchema = Yup.object().shape({
+  _id: Yup.string().required(),
+  name: Yup.string().required(),
+  image: Yup.mixed().required(),
+});
+export type EditClubSchemaType = Yup.InferType<typeof EditClubSchema>;
+
+export const MatchCreateSchema = Yup.object({
+  team1: Yup.string().required(),
+  team2: Yup.string().required(),
+  team1players: Yup.array(Yup.string()).required(),
+  team2players: Yup.array(Yup.string()).required(),
+  match_time: Yup.string().required(),
+});
+export type MatchCreateSchemaType = Yup.InferType<typeof MatchCreateSchema>;

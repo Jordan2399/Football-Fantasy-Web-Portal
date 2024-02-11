@@ -119,6 +119,11 @@ export namespace AuthenticationRoute {
     AuthenticationController.SignIn
   ]);
 
+  Index.post("/authentication/osignin", [
+    validateRequest(AuthenticationValidation.GoogleSignIn),
+    AuthenticationController.GoogleSignIn
+  ]);
+
 
 
 
@@ -223,4 +228,25 @@ export namespace AuthenticationRoute {
   Index.get("/authentication/users", [
     AuthenticationController.Users
   ]);
+
+
+
+
+
+
+
+  Index.get("/authentication/profile", [
+    AuthenticationController.Profile,
+  ]);
+  Index.patch("/authentication/profile", [
+    validateRequest(AuthenticationValidation.ProfileUpdate),
+    AuthenticationController.ProfileUpdate,
+  ]);
+
+
+  Index.patch("/authentication/updatepassword", [
+    validateRequest(AuthenticationValidation.UpdatePassword),
+    AuthenticationController.UpdatePassword,
+  ]);
+
 }

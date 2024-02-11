@@ -7,6 +7,7 @@ import { ExpressConfig } from "./vendor";
 import cookieParser from "cookie-parser";
 import { RoutesPrivateRoute } from "./routes/private/routes.private.route";
 import { UtilsError, UtilsMSApi, UtilsPermission } from "./utils";
+import { TokenVerificationUtils } from "./utils/token";
 
 
 class Main extends ExpressConfig {
@@ -19,7 +20,7 @@ class Main extends ExpressConfig {
     this.app.use(
       cors({
         origin: [
-          "http://localhost:3000/api",
+          "http://localhost:3000"
         ],
       })
     );
@@ -28,9 +29,13 @@ class Main extends ExpressConfig {
     this.app.use(morgan("dev"));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use("/resources",[UtilsMSApi,RoutesPrivateRoute.Index])
+    this.app.use("/resources", [
+      UtilsMSApi,
+      // TokenVerificationUtils,
+      // UtilsPermission,
+      RoutesPrivateRoute.Index])
     this.app.use(UtilsError);
-  
+
   }
 }
 
@@ -38,6 +43,5 @@ const server = new Main(false);
 server.start();
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
-  // Handle the error or exit the process as needed
   process.exit(1);
 });
