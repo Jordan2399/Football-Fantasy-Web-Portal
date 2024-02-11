@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: footballfantasywebportal
+  labels:
+    app:
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: footballfantasywebportal
+  template:
+    metadata:
+      labels:
+        app: footballfantasywebportal
+    spec:
+      containers:
+      - name: client
+        image: your_docker_hub_username/client
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+      - name: user_service
+        image: your_docker_hub_username/user_service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+      - name: match_services
+        image: your_docker_hub_username/match_services
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4001
+      - name: gateway_service
+        image: your_docker_hub_username/gateway_service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
