@@ -13,6 +13,20 @@ export namespace AuthenticationServices {
       return Promise.reject(e as AxiosError);
     }
   };
+
+  
+  export const SignInGoogle = async (
+    data: AuthenticationServicesType.GoogleSignInProps
+  ): Promise<AuthenticationServicesType.SignInRes> => {
+    try {
+      const res = await api.post("/authentication/osignin", data);
+      return Promise.resolve(res.data);
+    } catch (e) {
+      return Promise.reject(e as AxiosError);
+    }
+  };
+
+
   export const SignUp = async (
     data: AuthenticationServicesType.SignUpProps
   ): Promise<AuthenticationServicesType.SignUpRes> => {

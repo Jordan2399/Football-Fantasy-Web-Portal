@@ -19,70 +19,81 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from "@/services/firebase/firebase";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 
 initializeApp(firebaseConfig)
 const auth  = getAuth()
 
-
-
 export const SignInScreen: React.FC = () => {
 
+  const router = useRouter();
 
+  const { mutateAsync, isPending } = useMutation<
+    AuthenticationServicesType.SignInRes,
+    Error,
+    AuthenticationServicesType.GoogleSignInProps
+  >({
+    mutationFn: (variables) => AuthenticationServices.SignInGoogle(variables),
+    onSuccess: (data) => {
+      Cookies.set("token", data.token);
+      router.replace(data.url);
+      location.reload();
+    },
+    onError: (error) => {
+      console.log('error',error)
+      const AxiosErr = error as AxiosError;
+      const err = AxiosErr?.response?.data as {
+        message: string;
+        path: "uid" | "password";
+      };
+    },
+  });
 
-  // const loginWithGoogle = async () => {
-  //   const provider = new GoogleAuthProvider();
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
 
-  //   // console.log('hello')
-  //   // const result = await signInWithPopup(ourGoogleAuth, googleAuth);
+    // console.log('hello')
+    // const result = await signInWithPopup(ourGoogleAuth, googleAuth);
 
-  //   signInWithPopup(auth, provider)
-  //     .then(async (result) => {
-  //       const credential = GoogleAuthProvider.credentialFromResult(result);
-  //       const token = await result.user.getIdToken();
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = await result.user.getIdToken();
 
-  //       // console.log('Google sign credentials:', credential)
-  //       // console.log('Google sign credentials:', token)
+        console.log('Google sign credentials:', credential)
+        console.log('Google sign credentials:', token)
 
-  //       try {
-  //         await mutateAsync({ email: (result.user.email as string), token: token! });
-  //       } catch (e) { }
+        try {
+          await mutateAsync({ email: (result.user.email as string), token: token! });
+        } catch (e) { }
 
-  //     })
-  //   // console.log('Google sign credentioals:', result.user.refreshToken)
-  // }
-  // const loginWithFacebook = async () => {
-  //   const provider = new FacebookAuthProvider();
+      })
+    // console.log('Google sign credentioals:', result.user.refreshToken)
+  }
+  const loginWithFacebook = async () => {
+    const provider = new FacebookAuthProvider();
 
-  //   // console.log('hello')
-  //   // const result = await signInWithPopup(ourGoogleAuth, googleAuth);
+    // console.log('hello')
+    // const result = await signInWithPopup(ourGoogleAuth, googleAuth);
 
-  //   signInWithPopup(auth, provider)
-  //     .then(async (result) => {
-  //       const credential = FacebookAuthProvider.credentialFromResult(result);
-  //       const token = await result.user.getIdToken();
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const token = await result.user.getIdToken();
 
-  //       console.log('Google sign credentials:', credential)
-  //       console.log('Google sign credentials:', token)
+        // console.log('Google sign credentials:', credential)
+        // console.log('Google sign credentials:', token)
 
-  //       try {
-  //         await mutateAsync({ email: (result.user.email as string), token: token! });
-  //       } catch (e) { }
+        try {
+          await mutateAsync({ email: (result.user.email as string), token: token! });
+        } catch (e) { }
 
-  //     })
-  //   // console.log('Google sign credentials:', result.user.refreshToken)
-  // }
-
-
-
-
-
-
-
-
-
-
-
+      })
+    // console.log('Google sign credentials:', result.user.refreshToken)
+  }
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -107,7 +118,7 @@ export const SignInScreen: React.FC = () => {
             }
           >
             <p className={"mt-3 text-[18px] font-bold text-slate-400"}>OR</p>
-            <button
+            <button onClick={loginWithGoogle}
               className={
                 "flex flex-row items-center justify-center gap-3 rounded w-full h-fit p-3 ring-black ring-1"
               }
