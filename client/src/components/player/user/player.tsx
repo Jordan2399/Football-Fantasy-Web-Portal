@@ -11,7 +11,7 @@ export const UserPlayer: React.FC<UserPlayerProps> = (props) => {
     []
   );
   const isDisable =
-    (props.player_type === "goalkeeper" && data.length >= 1) ||
+    (props.player_type === "goalkipper" && data.length >= 1) ||
     (props.player_type === "defender" && data.length >= 4) ||
     (props.player_type === "midfielder" && data.length >= 4) ||
     (props.player_type === "forward" && data.length >= 4);

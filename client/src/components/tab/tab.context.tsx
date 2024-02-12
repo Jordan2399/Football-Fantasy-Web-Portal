@@ -30,7 +30,7 @@ export const TabContextProvider = ({
           {
             active: path === "/dashboard/account/security",
             disabled: false,
-            tabName: "Security",
+            tabName: "Change Password",
             pathName: "security",
           },
         ]}

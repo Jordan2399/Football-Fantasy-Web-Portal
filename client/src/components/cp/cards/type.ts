@@ -20,5 +20,27 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
       updatedAt: string;
     } | null;
   };
-  onDeleteClub: () => void;
+  match?: {
+    match: {
+      team1:{
+        name:string,
+        image:string
+      },
+      team2:{
+        name:string
+        image:string
+      },
+      match_time:string
+    };
+    // image: string;
+    id: string;
+  };
+  // match?: {
+  //   name: string;
+  //   image: string;
+  //   id: string;
+  // };
+  onDeleteClub?: () => void;
+  onDeletePlayer?: () => void;
+  onDeleteMatch?: () => void;
 }

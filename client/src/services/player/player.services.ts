@@ -8,7 +8,7 @@ export namespace PlayerServices {
   }): Promise<PlayerServiceType.Player[]> => {
     try {
       const res = await api.get(
-        `/current_match_players?match_id=${data.match_id}&player_type=${data.player_type}`
+        `/current_match_players?id=${data.match_id}&player_type=${data.player_type}`
       );
       return Promise.resolve(res.data);
     } catch (e) {
@@ -49,7 +49,7 @@ export namespace PlayerServices {
     _id: string;
   }): Promise<PlayerServiceType.res> => {
     try {
-      const res = await api.delete(`/player${data._id}`);
+      const res = await api.delete(`/player?id=${data._id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e);

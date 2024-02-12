@@ -10,4 +10,12 @@ export namespace AccountService {
       return Promise.reject(e);
     }
   };
+  export const UpdateProfile = async () => {
+    try {
+      const res = await api.get("/user/history");
+      return Promise.resolve(res.data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
 }
