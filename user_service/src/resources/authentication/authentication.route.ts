@@ -120,7 +120,7 @@ export namespace AuthenticationRoute {
   ]);
 
   Index.post("/authentication/osignin", [
-    validateRequest(AuthenticationValidation.GoogleSignIn),
+    // validateRequest(AuthenticationValidation.GoogleSignIn),
     AuthenticationController.GoogleSignIn
   ]);
 

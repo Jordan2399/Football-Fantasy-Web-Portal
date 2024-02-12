@@ -138,15 +138,16 @@ export namespace AuthenticationServices {
 
 
   export const SignInV2 = async (req: Request) => {
+    // console.log('#################################################################################################################',req)
 
     try {
 
 
-      if (req.body?.gtoken) {
+      if (req.body?.token) {
         console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
         let user;
         try {
-          user = await admin.auth().verifyIdToken(req.body.gtoken);
+          user = await admin.auth().verifyIdToken(req.body.token);
           // If verification is successful, 'user' will contain the decoded token
           console.log(user);
         } catch (error) {
@@ -165,7 +166,7 @@ export namespace AuthenticationServices {
         //   // Add other properties as needed
         // };
         console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
-        admin.auth().verifyIdToken(req.body.gtoken).then((decodedToken) => {
+        admin.auth().verifyIdToken(req.body.token).then((decodedToken) => {
           const uid = decodedToken.uid
           const email = decodedToken.email
           console.log(email)
