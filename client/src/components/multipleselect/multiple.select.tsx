@@ -5,6 +5,11 @@ import { MultipleSelectProps } from "@/components/multipleselect/type";
 export const MultipleSelect: React.FC<MultipleSelectProps> = (props) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
+
+
+
+  
+
   const handleCheckboxChange = (value: string) => {
     if (selectedOptions.includes(value)) {
       setSelectedOptions(selectedOptions.filter((option) => option !== value));

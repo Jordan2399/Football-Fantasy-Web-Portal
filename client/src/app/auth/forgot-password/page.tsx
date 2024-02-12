@@ -1,7 +1,6 @@
 "use client";
-
-import { ForgotPasswordScreen } from "@/screens/authentication/forgotpassword.screen";
+import { ForgotPasswordScreen } from "@/screen/authentication/forgotpassword.screen";
 
 export default function Page() {
-  return <div><ForgotPasswordScreen/></div>;
+  return <ForgotPasswordScreen />;
 }

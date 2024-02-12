@@ -29,7 +29,7 @@ export namespace ClubServices {
     _id: string;
   }): Promise<ClubServicesType.Details> => {
     try {
-      const res = await api.get(`/club/${data._id}`);
+      const res = await api.get(`/club?id=${data._id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e as AxiosError);
@@ -37,7 +37,7 @@ export namespace ClubServices {
   };
   export const Delete = async (data: { _id: string }) => {
     try {
-      const res = await api.delete(`/club/${data._id}`);
+      const res = await api.delete(`/club?id=${data._id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e as AxiosError);
@@ -50,7 +50,7 @@ export namespace ClubServices {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("image", data.image as File);
-      const res = await api.patch(`/club/${data._id}`, formData);
+      const res = await api.patch(`/club?id=${data._id}`, formData);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e as AxiosError);

@@ -4,6 +4,10 @@ import Link from "next/link";
 import { CardProps } from "@/components/user/cards/type";
 
 export const UpcomingCard: React.FC<CardProps> = (props) => {
+  const getTime = (time: string) => {
+    const formattedDate = new Date(time).toLocaleString("en-US");
+    return formattedDate
+  }
   return (
     <Link
       href={
@@ -16,8 +20,9 @@ export const UpcomingCard: React.FC<CardProps> = (props) => {
       }
     >
       <div className={"text-sm font-bold w-fit flex flex-col items-start py-4"}>
-        <p>{props.upcoming?.match_time}</p>
-        <p>1 May</p>
+
+        <p>{getTime(props.upcoming?.match_time || '')}</p>
+        {/* <p>1 May</p> */}
       </div>
       <div className={"w-fit flex flex-row gap-6 items-center justify-between"}>
         <div
@@ -27,10 +32,12 @@ export const UpcomingCard: React.FC<CardProps> = (props) => {
         >
           <img
             className={"w-[36px] h-[36px]"}
-            src={`/api${props.upcoming?.team1.image}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGEURL}${props.upcoming?.team1?.image}`}
             alt={"club1.png"}
           />
-          <p>{props.upcoming?.team1.name}</p>
+          {/* <img width={"40px"} height={"40px"} src={"/club2.png"} alt={"logo"} /> */}
+
+          <p>{props.upcoming?.team1?.name}</p>
         </div>
         <div
           className={
@@ -42,8 +49,9 @@ export const UpcomingCard: React.FC<CardProps> = (props) => {
         <div
           className={"w-[40%] flex flex-row items-center gap-2 justify-start"}
         >
-          <img src={`/api${props.upcoming?.team2.image}`} alt={"club1.png"} />
-          <p>{props.upcoming?.team2.name}</p>
+          <img className={"w-[36px] h-[36px]"} src={`${process.env.NEXT_PUBLIC_IMAGEURL}${props.upcoming?.team2?.image}`} alt={"club1.png"} />
+          {/* <img width={"40px"} height={"40px"} src={"/club1.png"} alt={"logo"} /> */}
+          <p>{props.upcoming?.team2?.name}</p>
         </div>
       </div>
       <div

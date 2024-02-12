@@ -13,11 +13,22 @@ export namespace MatchServices {
     }
   };
 
+  export const AllMatch = async (): Promise<
+    MatchServicesType.OngoingMatchResponse []
+  > => {
+    try {
+      const res = await api.get("/match");
+      return Promise.resolve(res.data);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+
   export const OngoingMatchDetails = async (data: {
     id: string;
   }): Promise<MatchServicesType.MatchDetails> => {
     try {
-      const res = await api.get(`/event/${data.id}`);
+      const res = await api.get(`/event?id=${data.id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e);
@@ -28,7 +39,7 @@ export namespace MatchServices {
     id: string;
   }): Promise<MatchServicesType.FantasyTeam> => {
     try {
-      const res = await api.get(`/user/fantasy_team_score?match_id=${data.id}`);
+      const res = await api.get(`/user/fantasy_team_score?id=${data.id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e);
@@ -38,7 +49,7 @@ export namespace MatchServices {
     id: string;
   }): Promise<MatchServicesType.PlayerScore[]> => {
     try {
-      const res = await api.get(`/match/scoreboard?match_id=${data.id}`);
+      const res = await api.get(`/match/scoreboard?id=${data.id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e);
@@ -67,7 +78,7 @@ export namespace MatchServices {
   };
   export const Delete = async (data: { _id: string }) => {
     try {
-      const res = await api.delete(`/match/${data._id}`);
+      const res = await api.delete(`/match?id=${data._id}`);
       return Promise.resolve(res.data);
     } catch (e) {
       return Promise.reject(e);
